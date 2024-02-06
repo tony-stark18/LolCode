@@ -1,26 +1,22 @@
 class Solution {
     public boolean checkRecord(String s) {
-        int a=0;
-        int l=1;
-        int lm =0;
-        int n = s.length();
-        for(int i=0;i<n;i++){
-            if(s.charAt(i)=='A'){
+        int a = 0;
+        int l = 0;
+        int lm = 0;
+
+        for (char c : s.toCharArray()) {
+            if (c == 'A') {
                 a++;
             }
-            
-            if(i!=0 && s.charAt(i)=='L' && s.charAt(i-1)=='L'){
+
+            if (c == 'L') {
                 l++;
-                if(lm<l){
-                    lm=l;
-                }
+                lm = Math.max(lm, l);
+            } else {
+                l = 0;
             }
-            else{
-                l=1;
-            }
-            
         }
-        System.out.println(lm);
-        return a<2 && lm<3;
+
+        return a < 2 && lm < 3;
     }
 }
