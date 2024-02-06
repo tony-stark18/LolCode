@@ -7,13 +7,12 @@ public:
         int dr[] = {-1, 1, 0, 0};
         int dc[] = {0, 0, -1, 1};
 
-        // Pushing the 0s into the queue and marking them as visited in the input matrix.
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (mat[i][j] == 0) {
                     q.push({i, j});
                 } else {
-                    mat[i][j] = INT_MAX;  // Set non-zero cells to a large value (representing infinity).
+                    mat[i][j] = INT_MAX;
                 }
             }
         }
