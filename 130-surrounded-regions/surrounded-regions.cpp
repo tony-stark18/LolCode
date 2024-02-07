@@ -13,26 +13,20 @@ private:
     }
 public:
     void solve(vector<vector<char>>& board) {
+        if (board.empty() || board[0].empty()) {
+            return;
+        }
         int n = board.size();
         int m = board[0].size();
         int dr[] = {-1,1,0,0};
         int dc[] = {0,0,-1,1};
         vector<vector<int>> vis(n,vector<int>(m,0));
-        for(int i=0;i<n;i++){
-            if(board[i][0]=='O' && !vis[i][0]){
-                dfs(vis,board,dr,dc,i,0,n,m);
-            }
-            if(board[i][m-1]=='O' && !vis[i][m-1]){
-                dfs(vis,board,dr,dc,i,m-1,n,m);
-            }
-        }
-        for(int j=0;j<m;j++){
-            if(board[0][j]=='O' && !vis[0][j]){
-                dfs(vis,board,dr,dc,0,j,n,m);
-            }
-            if(board[n-1][j]=='O' && !vis[n-1][j]){
-                dfs(vis,board,dr,dc,n-1,j,n,m);
-            }
+        for (int i = 0; i < n; i++) {
+                for (int j = 0; j < m; j++) {
+                    if ((i == 0 || i == n - 1 || j == 0 || j == m - 1) && board[i][j] == 'O' && !vis[i][j]) {
+                        dfs(vis, board, dr, dc, i, j, n, m);
+                    }
+                }
         }
         for(int i=0;i<n;i++){
             for(int j=0;j<m;j++){
