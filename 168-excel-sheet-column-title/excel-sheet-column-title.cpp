@@ -1,23 +1,15 @@
 class Solution {
 public:
     string convertToTitle(int columnNumber) {
-        string s = "";
-        // int i=0;
-        while(columnNumber>26){
-            char c;
-            if(columnNumber%26==0){
-                c = 'Z';
-                columnNumber=columnNumber/26-1;
-            }
-            else{
-                c = columnNumber%26 + 64;
-                columnNumber/=26;
-            }
-            s+= c;
+        string result = "";
+
+        while (columnNumber > 0) {
+            columnNumber--; // Adjust to 0-based indexing
+            char c = 'A' + columnNumber % 26;
+            result = c + result;
+            columnNumber /= 26;
         }
-        char c = 64+columnNumber;
-        s+=c;
-        reverse(s.begin(),s.end());
-        return s;
+
+        return result;
     }
 };
