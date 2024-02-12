@@ -25,7 +25,6 @@ class Solution {
     public Node connect(Node root) {
         if(root==null) return null;
         Queue<Node> q = new LinkedList<>();
-        Node ln = new Node();
         q.add(root);
         while(!q.isEmpty()){
             Node curNode = q.remove();
@@ -34,7 +33,6 @@ class Solution {
                 if(curNode.next!=null) curNode.right.next = curNode.next.left;
                 q.add(curNode.left);
                 q.add(curNode.right);
-                ln = curNode;
             }
         }
         return root;
