@@ -1,43 +1,35 @@
 class Solution {
 public:
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
-        // use graph: [ai, bi], bi -> ai
-        vector<vector<int>> graph(numCourses);
-        vector<int> inDegree(numCourses, 0); 
-        vector<int> result;
-        // [ai, bi], bi->ai: means how many other prerequisite course ai need?
-        // if inDegree is 0, it don't have any prerequisites
-        for (const auto& prerequisite: prerequisites) {
-            graph[prerequisite[1]].push_back(prerequisite[0]);
-            // means prerequisite[1] -> prerequisite[0]
-            inDegree[prerequisite[0]]++;
-            // means prerequisite[0] is counted, prerequisite[0] has one more prerequisite is prerequisite[1]
+        vector<vector<int>> adj(numCourses);
+        for(auto it:prerequisites){
+            adj[it[1]].push_back(it[0]);
         }
-
-        // create the queue
-        queue<int> q;
-        for (int i = 0; i < numCourses; i++)
-        {
-            if (inDegree[i] == 0) q.push(i);
-        }
-
-        while (!q.empty())
-        {
-            int curr = q.front();
-            q.pop();
-            result.push_back(curr);
-
-            for (int neighbor: graph[curr])
-            {
-                if (--inDegree[neighbor] == 0) q.push(neighbor);
+        vector<int> indegree(numCourses,0);
+        for(int i=0;i<numCourses;i++){
+            for(auto it:adj[i]){
+                indegree[it]++;
             }
         }
-
-        if (result.size() == numCourses)
-        {
-            return result;
-        } else {
-            return {};
+        queue<int> q;
+        for(int i=0;i<numCourses;i++){
+            if(indegree[i]==0) q.push(i);
         }
+        vector<int> topo;
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            topo.push_back(node);
+            for(auto it: adj[node]){
+                indegree[it]--;
+                if(indegree[it]==0) q.push(it);
+            }
+        }
+        // sort(topo.begin(),topo.end());
+        if(topo.size()!=numCourses){
+            vector<int> v;
+            return v;
+        }
+        return topo;
     }
-}; 
+};
