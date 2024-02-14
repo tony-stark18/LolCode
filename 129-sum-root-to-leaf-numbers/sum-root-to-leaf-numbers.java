@@ -14,27 +14,22 @@
  * }
  */
 class Solution {
-    public void SumN(TreeNode root,int num,List<Integer> ls){
+    public void SumN(TreeNode root,int num,int arr[]){
         if(root==null){
             return;
         }
         if(root.left==null && root.right==null){
-            ls.add(num*10+root.val);
+            arr[0]+=num*10+root.val;
             return;
         }
         num = num*10+root.val;
-        SumN(root.left,num,ls);
-        SumN(root.right,num,ls);
+        SumN(root.left,num,arr);
+        SumN(root.right,num,arr);
     }
     public int sumNumbers(TreeNode root) {
         if(root==null) return 0;
-        List<Integer> ls = new ArrayList<>();
-        SumN(root,0,ls);
-        int res=0;
-        for(int i:ls){
-            res+=i;
-            System.out.println(i);
-        }
-        return res;
+        int arr[] = new int[1];
+        SumN(root,0,arr);
+        return arr[0];
     }
 }
