@@ -22,7 +22,7 @@ public:
                 int adjNode = it.first;
                 int egdeW = it.second;
 
-                if(egdeW+cost<costs[adjNode] && stops<=k){
+                if(egdeW+cost<costs[adjNode]){
                     costs[adjNode] = egdeW + cost;
                     q.push({stops+1,{adjNode,costs[adjNode]}});
                 }
