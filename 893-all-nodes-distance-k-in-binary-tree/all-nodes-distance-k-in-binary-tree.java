@@ -38,13 +38,13 @@ public class Solution {
         buildGraph(root, adj, min);
 
         // Print the adjacency list for debugging
-        for (int i = 0; i < noOfNodes[0]; i++) {
-            System.out.print(i + " -> ");
-            for (int j = 0; j < adj.get(i).size(); j++) {
-                System.out.print(adj.get(i).get(j) + " ");
-            }
-            System.out.println();
-        }
+        // for (int i = 0; i < noOfNodes[0]; i++) {
+        //     System.out.print(i + " -> ");
+        //     for (int j = 0; j < adj.get(i).size(); j++) {
+        //         System.out.print(adj.get(i).get(j) + " ");
+        //     }
+        //     System.out.println();
+        // }
 
         List<Integer> vis = new ArrayList<>();
         for (int i = 0; i < noOfNodes[0]; i++) {
