@@ -1,11 +1,24 @@
 class Solution {
     public int findDuplicate(int[] nums) {
-        int n = nums.length;
-        boolean freq[] = new boolean[n];
-        for(int i=0;i<n;i++){
-            if(freq[nums[i]]) return nums[i];
-            freq[nums[i]]=true;
+        int tortoise = nums[0];
+        int hare = nums[0];
+        
+        // Phase 1: Find the intersection point
+        while (true) {
+            tortoise = nums[tortoise];
+            hare = nums[nums[hare]];
+            if (tortoise == hare) {
+                break;
+            }
         }
-        return -1;
+        
+        // Phase 2: Find the entrance to the cycle
+        tortoise = nums[0];
+        while (tortoise != hare) {
+            tortoise = nums[tortoise];
+            hare = nums[hare];
+        }
+        
+        return tortoise;
     }
 }
