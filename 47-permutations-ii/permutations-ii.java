@@ -1,28 +1,28 @@
 class Solution {
-    public void soln(int[] nums,Set<List<Integer>> ans, List<Integer> ds,int[] visited){
-        if(ds.size()==nums.length){
-            ans.add(new ArrayList<>(ds));
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Set<List<Integer>> resultSet = new HashSet<>();
+        backtrack(nums, resultSet, new ArrayList<>(), new boolean[nums.length]);
+        result.addAll(resultSet);
+        return result;
+    }
+
+    private void backtrack(int[] nums, Set<List<Integer>> resultSet, List<Integer> currentPermutation, boolean[] visited) {
+        if (currentPermutation.size() == nums.length) {
+            resultSet.add(new ArrayList<>(currentPermutation));
             return;
         }
-        for(int i=0;i<nums.length;i++){
-            if(visited[i]==0){
-                visited[i]=1;
-                ds.add(nums[i]);
-                soln(nums,ans,ds,visited);
-                visited[i]=0;
-                ds.remove(ds.size()-1);
+
+        for (int i = 0; i < nums.length; i++) {
+            if (visited[i] || (i > 0 && nums[i] == nums[i - 1] && !visited[i - 1])) {
+                continue; // Skip duplicates and already visited elements
             }
+
+            visited[i] = true;
+            currentPermutation.add(nums[i]);
+            backtrack(nums, resultSet, currentPermutation, visited);
+            currentPermutation.remove(currentPermutation.size() - 1);
+            visited[i] = false;
         }
     }
-    public List<List<Integer>> permuteUnique(int[] nums) {
-        List<List<Integer>> ls = new ArrayList<>();
-        Set<List<Integer>> ans = new HashSet<>();
-        int vis[] = new int[nums.length];
-        soln(nums,ans,new ArrayList<>(),vis);
-        Iterator<List<Integer>> i = ans.iterator();
-        while (i.hasNext()){
-            ls.add(i.next());
-        }
-        return ls;
-     }
 }
