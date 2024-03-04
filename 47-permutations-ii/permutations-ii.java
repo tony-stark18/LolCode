@@ -1,15 +1,16 @@
+
 class Solution {
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
-        Set<List<Integer>> resultSet = new HashSet<>();
-        backtrack(nums, resultSet, new ArrayList<>(), new boolean[nums.length]);
-        result.addAll(resultSet);
+        Arrays.sort(nums);
+        boolean[] visited = new boolean[nums.length];
+        backtrack(nums, result, new ArrayList<>(), visited);
         return result;
     }
 
-    private void backtrack(int[] nums, Set<List<Integer>> resultSet, List<Integer> currentPermutation, boolean[] visited) {
+    private void backtrack(int[] nums, List<List<Integer>> result, List<Integer> currentPermutation, boolean[] visited) {
         if (currentPermutation.size() == nums.length) {
-            resultSet.add(new ArrayList<>(currentPermutation));
+            result.add(new ArrayList<>(currentPermutation));
             return;
         }
 
@@ -20,9 +21,14 @@ class Solution {
 
             visited[i] = true;
             currentPermutation.add(nums[i]);
-            backtrack(nums, resultSet, currentPermutation, visited);
+            backtrack(nums, result, currentPermutation, visited);
             currentPermutation.remove(currentPermutation.size() - 1);
             visited[i] = false;
+
+            // Skip consecutive duplicates
+            while (i + 1 < nums.length && nums[i] == nums[i + 1]) {
+                i++;
+            }
         }
     }
 }
