@@ -1,50 +1,54 @@
-import java.util.Arrays;
-
 class Solution {
     public int bagOfTokensScore(int[] tokens, int power) {
-        if (tokens.length == 0) {
-            return 0;
-        }
-
         int score = 0;
         int maxScore = 0;
         int left = 0;
         int n = tokens.length;
-        int right = n - 1;
-
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (tokens[j] > tokens[j + 1]) {
-                    int temp = tokens[j];
-                    tokens[j] = tokens[j + 1];
-                    tokens[j + 1] = temp;
-                }
-            }
-        }
-
-        if (power < tokens[left]) {
-            return 0;
-        }
-        
-        while (left <= right) {
-            while (left <= right && power >= tokens[left]) {
+        int right = n-1;
+        quicksort(tokens,0,n-1);
+        while(left<=right){
+            while(left<=right && power>=tokens[left]){
                 score++;
-                power -= tokens[left];
+                power-=tokens[left];
                 left++;
             }
-
-            if (score == 0) return maxScore;
-
-            maxScore = Math.max(score, maxScore);
-
-            if (score > 0) {
+            if(score==0) return 0;
+            maxScore = Math.max(score,maxScore);
+            if(score>0){
                 score--;
-                power += tokens[right];
+                power+=tokens[right];
                 right--;
-                maxScore = Math.max(score, maxScore);
+                maxScore = Math.max(score,maxScore);
             }
         }
-
         return maxScore;
+    }
+     private void quicksort(int[] arr, int left, int right) 
+    {
+        if (left < right) 
+        {
+            int pivotIndex = partition(arr, left, right);
+            quicksort(arr, left, pivotIndex - 1);
+            quicksort(arr, pivotIndex + 1, right);
+        }
+    }
+    private int partition(int[] arr, int left, int right) 
+    {
+        int pivotValue = arr[right];
+        int i = left - 1;
+        for (int j = left; j < right; j++) 
+        {
+            if (arr[j] < pivotValue) 
+            {
+                i++;
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+        int temp = arr[i + 1];
+        arr[i + 1] = arr[right];
+        arr[right] = temp;
+        return i + 1;
     }
 }
