@@ -1,29 +1,41 @@
-class Solution {
-    public void soln(String digits,HashMap<Character,String> hs,List<String> ans,String s,int n){
-        int i = s.length();
-        if(i>n) return;
-        if(i==n){
-            if(i!=0)
-                ans.add(s);
+
+public class Solution {
+    private void generateCombinations(String digits, HashMap<Character, String> mappings, List<String> combinations, StringBuilder current, int index) {
+        // Base case: when index reaches the length of digits
+        if (index == digits.length()) {
+            combinations.add(current.toString()); // Add the current combination to the list
             return;
         }
-        String str = hs.get(digits.charAt(i));
-        for(int itr=0;itr<str.length();itr++){
-            soln(digits,hs,ans,s+str.charAt(itr),n);
+
+        char digit = digits.charAt(index);
+        String mapping = mappings.get(digit);
+
+        // Iterate through the characters mapped to the current digit
+        for (char c : mapping.toCharArray()) {
+            current.append(c); // Append the character to the current combination
+            generateCombinations(digits, mappings, combinations, current, index + 1); // Recursive call
+            current.deleteCharAt(current.length() - 1); // Backtrack: Remove the last character
         }
     }
+
     public List<String> letterCombinations(String digits) {
-        HashMap<Character,String> hs = new HashMap<>();
-        hs.put('2',"abc");
-        hs.put('3',"def");
-        hs.put('4',"ghi");
-        hs.put('5',"jkl");
-        hs.put('6',"mno");
-        hs.put('7',"pqrs");
-        hs.put('8',"tuv");
-        hs.put('9',"wxyz");
-        List<String> ls = new ArrayList<>();
-        soln(digits,hs,ls,"",digits.length());
-        return ls;
+        if (digits == null || digits.length() == 0) {
+            return new ArrayList<>(); // Return an empty list if the input is empty
+        }
+
+        // Mapping of digits to corresponding characters
+        HashMap<Character, String> mappings = new HashMap<>();
+        mappings.put('2', "abc");
+        mappings.put('3', "def");
+        mappings.put('4', "ghi");
+        mappings.put('5', "jkl");
+        mappings.put('6', "mno");
+        mappings.put('7', "pqrs");
+        mappings.put('8', "tuv");
+        mappings.put('9', "wxyz");
+
+        List<String> combinations = new ArrayList<>();
+        generateCombinations(digits, mappings, combinations, new StringBuilder(), 0); // Start generating combinations
+        return combinations;
     }
 }
