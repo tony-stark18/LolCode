@@ -1,18 +1,17 @@
 class Solution {
     public int numSubarraysWithSum(int[] nums, int goal) {
-        int[] prefixSumCount = new int[nums.length + 1];
-        prefixSumCount[0] = 1;
-        int count = 0;
-        int sum = 0;
-        
-        for (int num : nums) {
-            sum += num;
-            if (sum >= goal) {
-                count += prefixSumCount[sum - goal];
+        int n = nums.length;
+        int arr[] = new int[n+1];
+        arr[0]=1;
+        int count=0;
+        int sum=0;
+        for(int i:nums){
+            sum+=i;
+            if(sum>=goal){
+                count+=arr[sum-goal];
             }
-            prefixSumCount[sum]++;
+            arr[sum]++;
         }
-        
         return count;
     }
 }
