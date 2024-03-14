@@ -1,17 +1,25 @@
 class Solution {
-    public int numSubarraysWithSum(int[] nums, int goal) {
-        int n = nums.length;
-        int arr[] = new int[n+1];
-        arr[0]=1;
-        int count=0;
-        int sum=0;
-        for(int i:nums){
-            sum+=i;
-            if(sum>=goal){
-                count+=arr[sum-goal];
+    // Helper function to count the number of subarrays with sum at most the given goal
+    private int slidingWindowAtMost(int[] nums, int goal) {
+        int start = 0, currentSum = 0, totalCount = 0;
+
+        // Iterate through the array using a sliding window approach
+        for (int end = 0; end < nums.length; end++) {
+            currentSum += nums[end];
+
+            // Adjust the window by moving the start pointer to the right
+            // until the sum becomes less than or equal to the goal
+            while (start <= end && currentSum > goal) {
+                currentSum -= nums[start++];
             }
-            arr[sum]++;
+
+            // Update the total count by adding the length of the current subarray
+            totalCount += end - start + 1;
         }
-        return count;
+        return totalCount;
+    }
+
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        return slidingWindowAtMost(nums, goal) - slidingWindowAtMost(nums, goal - 1);
     }
 }
