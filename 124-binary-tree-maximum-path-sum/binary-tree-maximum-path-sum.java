@@ -14,26 +14,19 @@
  * }
  */
 class Solution {
-    int maxSum = Integer.MIN_VALUE; // Initializing with minimum integer value
-    
-    public int maxPathSum(TreeNode root) {
-        if (root == null) return 0;
-        maxGain(root);
-        return maxSum;
+    private int soln(TreeNode root,int[] max){
+        if(root==null) return 0;
+        int ls = Math.max(soln(root.left,max),0);
+        int rs = Math.max(soln(root.right,max),0);
+
+        int res = root.val+ls+rs;
+        max[0]=Math.max(max[0],res);
+        return root.val+Math.max(ls,rs);
     }
-    
-    private int maxGain(TreeNode node) {
-        if (node == null) return 0;
-        
-        // Maximum gain on the left and right subtrees
-        int leftGain = Math.max(maxGain(node.left), 0);
-        int rightGain = Math.max(maxGain(node.right), 0);
-        
-        // Update maximum path sum considering the current node as a part of the path
-        int priceNewPath = node.val + leftGain + rightGain;
-        maxSum = Math.max(maxSum, priceNewPath);
-        
-        // Max gain considering only one branch of the subtree
-        return node.val + Math.max(leftGain, rightGain);
+    public int maxPathSum(TreeNode root) {
+        int arr[] = new int[1];
+        arr[0]=Integer.MIN_VALUE;
+        soln(root,arr);
+        return arr[0];
     }
 }
