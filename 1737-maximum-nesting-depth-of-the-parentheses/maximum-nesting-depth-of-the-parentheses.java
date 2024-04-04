@@ -6,10 +6,10 @@ class Solution {
             if(s.charAt(i)=='('){
                 count++;
             }
-            maxCount=Math.max(count,maxCount);
             if(s.charAt(i)==')'){
                 count--;
             }
+            maxCount=Math.max(count,maxCount);
         }
         return maxCount;
     }
