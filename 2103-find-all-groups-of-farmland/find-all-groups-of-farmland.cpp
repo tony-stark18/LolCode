@@ -1,7 +1,3 @@
-#include <vector>
-#include <utility>
-using namespace std;
-
 class Solution {
 public:
     pair<int,int> dfs(vector<vector<int>>& land, int r, int c, int dr[], int dc[], int m, int n){
