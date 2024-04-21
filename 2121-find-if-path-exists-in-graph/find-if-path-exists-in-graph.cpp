@@ -9,22 +9,35 @@ public:
             graph[v].push_back(u);
         }
         
-        unordered_set<int> visited;
-        return dfs(source, destination, graph, visited);
-    }
-    
-    bool dfs(int node, int destination, unordered_map<int, vector<int>>& graph, unordered_set<int>& visited) {
-        if (node == destination) {
-            return true;
-        }
-        visited.insert(node);
-        for (int neighbor : graph[node]) {
-            if (visited.find(neighbor) == visited.end()) {
-                if (dfs(neighbor, destination, graph, visited)) {
-                    return true;
+        vector<int> distances(n, numeric_limits<int>::max());
+        distances[source] = 0;
+        
+        priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> priorityQueue;
+        priorityQueue.push({0, source});
+        
+        while (!priorityQueue.empty()) {
+            auto current = priorityQueue.top();
+            priorityQueue.pop();
+            int currentDistance = current.first;
+            int currentNode = current.second;
+            
+            if (currentNode == destination) {
+                return true;
+            }
+            
+            if (currentDistance > distances[currentNode]) {
+                continue;
+            }
+            
+            for (int neighbor : graph[currentNode]) {
+                int distance = currentDistance + 1; // Assuming unweighted graph
+                if (distance < distances[neighbor]) {
+                    distances[neighbor] = distance;
+                    priorityQueue.push({distance, neighbor});
                 }
             }
         }
+        
         return false;
     }
 };
