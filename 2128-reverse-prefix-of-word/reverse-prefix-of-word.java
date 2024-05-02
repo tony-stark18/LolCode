@@ -8,10 +8,8 @@ class Solution {
             }
         }
         if(t==-1) return word;
-        StringBuilder sb = new StringBuilder("");
-        for(int i=t;i>=0;i--){
-            sb.append(word.charAt(i));
-        }
+        StringBuilder sb = new StringBuilder(word.substring(0,t+1));
+        sb.reverse();
         for(int i=t+1;i<word.length();i++){
             sb.append(word.charAt(i));
         }
