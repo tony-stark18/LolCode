@@ -10,9 +10,7 @@ class Solution {
         if(t==-1) return word;
         StringBuilder sb = new StringBuilder(word.substring(0,t+1));
         sb.reverse();
-        for(int i=t+1;i<word.length();i++){
-            sb.append(word.charAt(i));
-        }
+        sb.append(word.substring(t+1,word.length()));
         return sb.toString();
     }
 }
