@@ -1,24 +1,42 @@
+import java.util.PriorityQueue;
+
 class Solution {
-    public String[] findRelativeRanks(int[] score) {
-        PriorityQueue<int[]> maxHeap = new PriorityQueue<>((a, b) -> b[0] - a[0]);
-        for (int i = 0; i < score.length; i++) {
-            maxHeap.add(new int[]{score[i], i});
+    class Pair implements Comparable<Pair> {
+        int score;
+        int index;
+
+        public Pair(int score, int index) {
+            this.score = score;
+            this.index = index;
         }
+
+        @Override
+        public int compareTo(Pair other) {
+            return other.score - this.score; // Sort in descending order of scores
+        }
+    }
+
+    public String[] findRelativeRanks(int[] score) {
+        PriorityQueue<Pair> maxHeap = new PriorityQueue<>();
+        for (int i = 0; i < score.length; i++) {
+            maxHeap.add(new Pair(score[i], i));
+        }
+
         String[] ans = new String[score.length];
-        int k = 1;
+        int rank = 1;
         while (!maxHeap.isEmpty()) {
-            int[] pair = maxHeap.poll();
-            int ind = pair[1];
-            if (k == 1) {
-                ans[ind] = "Gold Medal";
-            } else if (k == 2) {
-                ans[ind] = "Silver Medal";
-            } else if (k == 3) {
-                ans[ind] = "Bronze Medal";
+            Pair pair = maxHeap.poll();
+            int index = pair.index;
+            if (rank == 1) {
+                ans[index] = "Gold Medal";
+            } else if (rank == 2) {
+                ans[index] = "Silver Medal";
+            } else if (rank == 3) {
+                ans[index] = "Bronze Medal";
             } else {
-                ans[ind] = String.valueOf(k);
+                ans[index] = String.valueOf(rank);
             }
-            k++;
+            rank++;
         }
         return ans;
     }
