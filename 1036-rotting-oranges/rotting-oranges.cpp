@@ -12,7 +12,7 @@ public:
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 2) {
                     q.push({{i, j}, 0});
-                    vis[i][j] = 2;
+                    vis[i][j] = 1;    
                 } else if (grid[i][j] == 1) {
                     cntFresh++;
                 } else {
@@ -33,9 +33,9 @@ public:
                 int nc = c + dc[i];
 
                 if (nr >= 0 && nc >= 0 && nr < m && nc < n &&
-                    vis[nr][nc] != 2 && grid[nr][nc] == 1) {
+                    vis[nr][nc] != 1 && grid[nr][nc] == 1) {
                     q.push({{nr, nc}, t + 1});
-                    vis[nr][nc] = 2;
+                    vis[nr][nc] = 1;
                     cnt++;
                 }
             }
