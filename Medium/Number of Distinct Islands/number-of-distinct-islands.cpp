@@ -8,36 +8,36 @@ using namespace std;
 // User function Template for C++
 
 class Solution {
-  private:
-    void dfs(int row,int col,vector<vector<int>> &vis,vector<vector<int>>& grid,vector<pair<int,int>> &vec,int row0,int col0,int n, int m){
-        vis[row][col]=1;
-        vec.push_back({row-row0,col-col0});
-        int delrow[] = {-1,0,1,0};
-        int delcol[] = {0,-1,0,1};
+  public:
+  
+    void dfs(vector<vector<int>> &vis,vector<vector<int>>& grid,int r,int c,int m,int n,vector<pair<int,int>> &vec,int dr[],int dc[],int r0,int c0){
+        vis[r][c]=1;
+        vec.push_back({r-r0,c-c0});
         for(int i=0;i<4;i++){
-            int nr = row+delrow[i];
-            int nc = col+delcol[i];
-            if(nr>=0 && nr<n && nc>=0 && nc<m && !vis[nr][nc] && grid[nr][nc]==1){
-                dfs(nr,nc,vis,grid,vec,row0,col0,n,m);
+            int nr = r+dr[i];
+            int nc = c+dc[i];
+            if(nr>=0 && nc>=0 && nr<m && nc<n && !vis[nr][nc] && grid[nr][nc]==1){
+                dfs(vis,grid,nr,nc,m,n,vec,dr,dc,r0,c0);
             }
         }
     }
-  public:
     int countDistinctIslands(vector<vector<int>>& grid) {
-        int n = grid.size();
-        int m = grid[0].size();
-        vector<vector<int>> vis(n,vector<int>(m,0));
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> vis(m,vector<int>(n,0));
         set<vector<pair<int,int>>> st;
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
+        int dr[] ={-1,1,0,0};
+        int dc[] = {0,0,-1,1};
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
                 if(!vis[i][j] && grid[i][j]==1){
                     vector<pair<int,int>> vec;
-                    dfs(i,j,vis,grid,vec,i,j,n,m);
+                    dfs(vis,grid,i,j,m,n,vec,dr,dc,i,j);
                     st.insert(vec);
                 }
             }
         }
-        return st.size();
+        return st.size();   
     }
 };
 
@@ -61,4 +61,4 @@ int main() {
         cout << obj.countDistinctIslands(grid) << endl;
     }
 }
-// } Driv
+// } Driver Code Ends
