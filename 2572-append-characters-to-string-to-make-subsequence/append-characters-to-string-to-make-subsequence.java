@@ -3,8 +3,10 @@ class Solution {
         int i=0;
         int j=0;
         int count = 0;
-        while(i<s.length() && j<t.length()){
-            if(s.charAt(i)==t.charAt(j)){
+        char arr1[] = s.toCharArray();
+        char arr2[] = t.toCharArray();
+        while(i<arr1.length && j<arr2.length){
+            if(arr1[i]==arr2[j]){
                 count++;
                 i++;
                 j++;
@@ -13,6 +15,6 @@ class Solution {
                 i++;
             }
         }
-        return t.length()-count;
+        return arr2.length-count;
     }
 }
