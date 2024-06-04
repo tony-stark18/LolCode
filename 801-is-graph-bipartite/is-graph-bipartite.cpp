@@ -1,22 +1,30 @@
 class Solution {
-public:
-    bool check(vector<vector<int>>& graph,vector<int> &colors,int node){
-        for(auto it:graph[node]){
-            if(colors[it]==-1){
-                colors[it]=!colors[node];
-                if(!check(graph,colors,it)) return false;
+private:
+    bool check(int start,vector<vector<int>>& graph,vector<int> &col){
+        queue<int> q;
+        q.push(start);
+        col[start] = 0;
+        while(!q.empty()){
+            int node = q.front();
+            q.pop();
+            for(auto it:graph[node]){
+                if(col[it]==-1){
+                    col[it] = !col[node];
+                    q.push(it);
+                }
+                else if(col[it] == col[node]){
+                    return false;
+                }
             }
-            if(colors[it]==colors[node]) return false;
         }
         return true;
     }
+public:
     bool isBipartite(vector<vector<int>>& graph) {
-        vector<int> colors(graph.size(),-1);
-        for(int i=0;i<graph.size();i++){
-            if(colors[i] ==-1){
-                colors[i]=0;
-                if(!check(graph,colors,i)) return false;
-            }
+        int v = graph.size();
+        vector<int> col(v,-1);
+        for(int i=0;i<v;i++){
+            if(col[i] == -1 && check(i,graph,col)==false) return false; 
         }
         return true;
     }
