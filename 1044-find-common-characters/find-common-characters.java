@@ -1,23 +1,23 @@
 class Solution {
     public List<String> commonChars(String[] words) {
-        int n = words.length;
-        int arr[][] = new int[n][26];
-        for (int i = 0; i < n; i++) {
-            for (char c : words[i].toCharArray()) {
-                arr[i][c - 'a']++;
+        int[] minFreq = new int[26];
+        // Initialize minFreq to maximum value
+        Arrays.fill(minFreq, Integer.MAX_VALUE);
+
+        for (String word : words) {
+            int[] charCount = new int[26];
+            for (char c : word.toCharArray()) {
+                charCount[c - 'a']++;
+            }
+            for (int i = 0; i < 26; i++) {
+                minFreq[i] = Math.min(minFreq[i], charCount[i]);
             }
         }
+
         List<String> ans = new ArrayList<>();
         for (int i = 0; i < 26; i++) {
-            int count = arr[0][i];
-            for (int j = 1; j < n; j++) {
-                count = Math.min(count, arr[j][i]);
-            }
-            if (count != 0) {
-                for (int k = 0; k < count; k++) {
-
-                    ans.add(Character.toString('a' + i));
-                }
+            for (int j = 0; j < minFreq[i]; j++) {
+                ans.add(Character.toString((char) (i + 'a')));
             }
         }
         return ans;
