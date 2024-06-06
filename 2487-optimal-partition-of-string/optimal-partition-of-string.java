@@ -1,18 +1,17 @@
 class Solution {
     public int partitionString(String s) {
         int count = 0;
-        HashSet<Character> hs = new HashSet<>();
-        char arr[] = s.toCharArray();
-        for (int i = 0; i < arr.length; i++) {
-            if (hs.contains(arr[i])) {
-                count++;
-                hs.clear();
-                hs.add(arr[i]);
+        boolean[] seen = new boolean[26]; // to track characters seen in the current partition
+        char[] arr = s.toCharArray();
+        
+        for (char c : arr) {
+            if (seen[c - 'a']) { // if the character is already seen in the current partition
+                count++; // start a new partition
+                seen = new boolean[26]; // reset the seen array
             }
-            else{
-                hs.add(arr[i]);
-            }
+            seen[c - 'a'] = true; // mark the character as seen
         }
-        return count+1;
+        
+        return count + 1; // add one for the last partition
     }
 }
