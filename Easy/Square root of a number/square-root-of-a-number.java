@@ -28,8 +28,9 @@ class Solution
 {
      long floorSqrt(long x)
 	 {
+	    if(x==1) return 1;
 		long low = 1;
-		long high = x;
+		long high = x/2;
 		while(low<=high){
 		    long mid = low+(high-low)/2;
 		    if(mid*mid<=x) low = mid+1;
