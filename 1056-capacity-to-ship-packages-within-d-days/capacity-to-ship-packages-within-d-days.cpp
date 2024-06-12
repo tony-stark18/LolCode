@@ -1,19 +1,18 @@
 class Solution {
 public:
     int calc(vector<int>& weights, int capacity) {
-        int days = 1; // At least one day is needed
-        int current_load = 0;
-
-        for (int weight : weights) {
-            if (current_load + weight > capacity) {
-                // Start a new day if the current load exceeds the capacity
-                days++;
-                current_load = 0;
+        int load = 0;
+        int days = 0;
+        for(int i:weights){
+            if(load+i<=capacity){
+                load+=i;
             }
-            current_load += weight;
+            else{
+                days++;
+                load = i;
+            }
         }
-
-        return days;
+        return days+1;
     }
     int shipWithinDays(vector<int>& weights, int days) {
         int low = *max_element(weights.begin(), weights.end());
