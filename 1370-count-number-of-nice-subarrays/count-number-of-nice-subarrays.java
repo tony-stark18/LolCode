@@ -1,20 +1,24 @@
-import java.util.HashMap;
-
 class Solution {
     public int numberOfSubarrays(int[] nums, int k) {
-        HashMap<Integer, Integer> countMap = new HashMap<>();
-        countMap.put(0, 1); // base case: one way to have 0 odd numbers with an empty subarray
-        int oddCount = 0;
-        int result = 0;
+        return atMost(nums, k) - atMost(nums, k - 1);
+    }
 
-        for (int num : nums) {
-            if (num % 2 != 0) {
-                oddCount++;
+    private int atMost(int[] nums, int k) {
+        int left = 0, right = 0;
+        int count = 0, result = 0;
+
+        while (right < nums.length) {
+            if (nums[right] % 2 != 0) {
+                k--;
             }
-            if (countMap.containsKey(oddCount - k)) {
-                result += countMap.get(oddCount - k);
+            while (k < 0) {
+                if (nums[left] % 2 != 0) {
+                    k++;
+                }
+                left++;
             }
-            countMap.put(oddCount, countMap.getOrDefault(oddCount, 0) + 1);
+            result += right - left + 1;
+            right++;
         }
 
         return result;
