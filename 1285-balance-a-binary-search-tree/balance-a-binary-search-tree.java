@@ -26,11 +26,9 @@ class Solution {
             return new TreeNode(ls.get(left));
         }
         int mid = (left+right)/2;
-        TreeNode leftNode = construct(ls,left,mid-1);
-        TreeNode rightNode = construct(ls,mid+1,right);
         TreeNode root = new TreeNode(ls.get(mid));
-        root.left = leftNode;
-        root.right = rightNode;
+        root.left = construct(ls,left,mid-1);
+        root.right = construct(ls,mid+1,right);
         return root;
     }
     public TreeNode balanceBST(TreeNode root) {
