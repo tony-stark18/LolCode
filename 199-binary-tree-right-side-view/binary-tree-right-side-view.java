@@ -14,24 +14,19 @@
  * }
  */
 class Solution {
-    public List<Integer> rightSideView(TreeNode root) {
-        List<Integer> ls = new ArrayList<>();
-        if(root==null) return ls;
-        Queue<TreeNode> q = new LinkedList<>();
-        q.add(root);
-        q.add(null);
-        while(!q.isEmpty()){
-            TreeNode node = q.remove();
-            if(node==null){
-                if(q.isEmpty()) break;
-                q.add(null);
-            }
-            else{
-                if(q.peek()==null) ls.add(node.val);
-                if(node.left!=null) q.add(node.left);
-                if(node.right!=null) q.add(node.right);
-            }
+    public void soln(TreeNode root,List<Integer> ans,int rightMaxDepth[],int curDepth){
+        if(root==null) return ;
+        if(curDepth>rightMaxDepth[0]){
+            ans.add(root.val);
+            rightMaxDepth[0]=curDepth;
         }
-        return ls;
+        soln(root.right,ans,rightMaxDepth,curDepth+1);
+        soln(root.left,ans,rightMaxDepth,curDepth+1);
+    }
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        int rightMaxDepth[] = {-1};
+        soln(root,ans,rightMaxDepth,0);
+        return ans;
     }
 }
