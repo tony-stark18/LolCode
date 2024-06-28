@@ -9,34 +9,31 @@
  *     TreeNode(int val, TreeNode left, TreeNode right) {
  *         this.val = val;
  *         this.left = left;
- *         this.right = right; 
+ *         this.right = right;
  *     }
  * }
  */
 class Solution {
+    private int index = 0;
+
     public TreeNode bstFromPreorder(int[] preorder) {
-        if (preorder == null || preorder.length == 0) {
+        return constructBST(preorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private TreeNode constructBST(int[] preorder, int lower, int upper) {
+        if (index == preorder.length) {
             return null;
         }
-        
-        TreeNode root = new TreeNode(preorder[0]);
-        Stack<TreeNode> stack = new Stack<>();
-        stack.push(root);
-        
-        for (int i = 1; i < preorder.length; i++) {
-            TreeNode node = new TreeNode(preorder[i]);
-            if (preorder[i] < stack.peek().val) {
-                stack.peek().left = node;
-            } else {
-                TreeNode parent = null;
-                while (!stack.isEmpty() && preorder[i] > stack.peek().val) {
-                    parent = stack.pop();
-                }
-                parent.right = node;
-            }
-            stack.push(node);
+
+        int val = preorder[index];
+        if (val < lower || val > upper) {
+            return null;
         }
-        
+
+        index++;
+        TreeNode root = new TreeNode(val);
+        root.left = constructBST(preorder, lower, val);
+        root.right = constructBST(preorder, val, upper);
         return root;
     }
 }
