@@ -24,27 +24,37 @@
  * }
  */
 class Solution {
-    public ListNode getMid(ListNode head){
+    private ListNode getMid(ListNode head) {
         ListNode slow = head;
-        ListNode fast = head.next;
-        while(fast!=null && fast.next!=null && fast.next.next!=null){
-            slow=slow.next;
+        ListNode fast = head;
+        ListNode prev = null;
+
+        while (fast != null && fast.next != null) {
+            prev = slow;
+            slow = slow.next;
             fast = fast.next.next;
         }
+
+        if (prev != null) {
+            prev.next = null;  // Split the list into two halves
+        }
+
         return slow;
     }
-    public TreeNode construct(ListNode head){
-        if(head==null) return null;
-        if(head.next==null) return new TreeNode(head.val);
+
+    private TreeNode construct(ListNode head) {
+        if (head == null) return null;
+        if (head.next == null) return new TreeNode(head.val);
+
         ListNode mid = getMid(head);
-        TreeNode root = new TreeNode(mid.next.val);
-        System.out.println(mid.val);
-        ListNode rightHead = mid.next.next;
-        mid.next = null;
-        root.left = construct(head);
-        root.right = construct(rightHead);
+        TreeNode root = new TreeNode(mid.val);
+
+        root.left = construct(head);   // Left half
+        root.right = construct(mid.next);  // Right half
+
         return root;
     }
+
     public TreeNode sortedListToBST(ListNode head) {
         return construct(head);
     }
