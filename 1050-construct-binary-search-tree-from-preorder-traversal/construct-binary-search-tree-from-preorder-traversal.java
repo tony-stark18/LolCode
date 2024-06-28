@@ -9,31 +9,34 @@
  *     TreeNode(int val, TreeNode left, TreeNode right) {
  *         this.val = val;
  *         this.left = left;
- *         this.right = right;
+ *         this.right = right; 
  *     }
  * }
  */
 class Solution {
-    public TreeNode bstFromPreorder(int[] p) {
-        TreeNode root = new TreeNode(p[0]);
-        Stack<TreeNode> st = new Stack<>();
-        st.push(root);
-        int ind = 1;
-        while(ind<p.length){
-            TreeNode t = st.peek();
-            if(p[ind]<t.val){
-                t.left = new TreeNode(p[ind]);
-                st.push(t.left);
-            }
-            else{
-                while(!st.isEmpty() && p[ind]>st.peek().val){
-                    t=st.pop();
-                }
-                t.right = new TreeNode(p[ind]);
-                st.push(t.right);
-            }
-            ind++;
+    public TreeNode bstFromPreorder(int[] preorder) {
+        if (preorder == null || preorder.length == 0) {
+            return null;
         }
+        
+        TreeNode root = new TreeNode(preorder[0]);
+        Stack<TreeNode> stack = new Stack<>();
+        stack.push(root);
+        
+        for (int i = 1; i < preorder.length; i++) {
+            TreeNode node = new TreeNode(preorder[i]);
+            if (preorder[i] < stack.peek().val) {
+                stack.peek().left = node;
+            } else {
+                TreeNode parent = null;
+                while (!stack.isEmpty() && preorder[i] > stack.peek().val) {
+                    parent = stack.pop();
+                }
+                parent.right = node;
+            }
+            stack.push(node);
+        }
+        
         return root;
     }
 }
