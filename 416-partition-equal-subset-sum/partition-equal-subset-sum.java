@@ -21,14 +21,17 @@ class Solution {
         // }
         // return soln(nums,sum/2,nums.length-1,dp);
         int target = sum / 2;
-        boolean dp[][] = new boolean[nums.length+1][target + 1];
+        boolean dp[][] = new boolean[nums.length][target + 1];
         for (int i = 0; i < nums.length; i++) {
             dp[i][0] = true;
         }
+        for(int i=0;i<=target;i++){
+            if(i==nums[0]) dp[0][i]=true;
+        }
 
-        for (int i = 1; i <= nums.length; i++) {
+        for (int i = 1; i <nums.length; i++) {
             for (int j = 1; j <= target; j++) {
-                int currEl = nums[i - 1];
+                int currEl = nums[i];
                 if (currEl <= j) {
                     dp[i][j] = dp[i-1][j] || dp[i-1][j - currEl];
                 } else {
@@ -36,7 +39,7 @@ class Solution {
                 }
             }
         }
-        return dp[nums.length][target];
+        return dp[nums.length-1][target];
 
     }
 }
