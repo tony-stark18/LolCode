@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 class Solution {
     public boolean canPartition(int[] nums) {
         int sum = 0;
@@ -10,16 +8,15 @@ class Solution {
 
         int target = sum / 2;
         boolean[] dp = new boolean[target + 1];
-        dp[0] = true; 
+        dp[0] = true; // Base case: we can always make a sum of 0
 
         for (int num : nums) {
-            boolean[] curr = Arrays.copyOf(dp, target + 1); 
-            for (int j = num; j <= target; j++) {
-                curr[j] = dp[j] || dp[j - num];
+            for (int j = target; j >= num; j--) {
+                dp[j] = dp[j] || dp[j - num];
             }
-            dp = curr;
         }
 
         return dp[target];
     }
+
 }
