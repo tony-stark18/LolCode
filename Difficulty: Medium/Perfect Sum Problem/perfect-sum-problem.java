@@ -27,26 +27,29 @@ class GfG
 
 class Solution{
 
-	static final int MOD = 1000000007;
-
+	static final int mod = 1000000007;
+    static int f(int arr[], int ind, int target, int dp[][]) {
+        if (ind == 0){
+            if(target==0 && arr[0]==0) return 2;
+            if(target==0 || arr[0]==target) return 1;
+            return 0;
+        }
+        if (ind < 0) return 0;
+        if (dp[ind][target] != -1) return dp[ind][target];
+        int nTake = f(arr, ind - 1, target, dp) % mod;
+        int take = 0;
+        if (arr[ind] <= target) {
+            take = f(arr, ind - 1, target - arr[ind], dp) % mod;
+        }
+        dp[ind][target] = (take + nTake) % mod;
+        return dp[ind][target];
+    }
     public int perfectSum(int arr[], int n, int sum) {
-        int[][] dp = new int[n+1][sum+1];
-
-        // Initialize dp array
-        for (int i = 0; i <= n; i++) {
-            dp[i][0] = 1;  // There's always one way to get sum 0 (empty subset)
+        int[][] dp = new int[n][sum+1];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i],-1);  
         }
-
-        // Fill the dp array
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j <= sum; j++) {
-                dp[i][j] = dp[i-1][j];  // Exclude the current element
-                if (arr[i-1] <= j) {
-                    dp[i][j] = (dp[i][j] + dp[i-1][j - arr[i-1]]) % MOD;  // Include the current element
-                }
-            }
-        }
-
-        return dp[n][sum];
+        
+        return f(arr,n-1,sum,dp);
     }
 }
