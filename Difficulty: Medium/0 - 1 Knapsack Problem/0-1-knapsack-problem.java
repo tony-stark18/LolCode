@@ -66,26 +66,29 @@ class Solution
     //Function to return max value that can be put in knapsack of capacity W.
     static int knapSack(int W, int wt[], int val[], int n) 
     { 
-          int dp[][] = new int[n][W+1];
-          for(int i=0;i<n;i++){
-              Arrays.fill(dp[i],-1);
-          }
-          return soln(W,wt,val,0,dp);
-        //   for(int w=wt[0];w<=W;w++){
-        //       dp[0][w]=val[0];
-        //   }
-        //   for(int i=1;i<n;i++){
-        //       for(int j=0;j<=W;j++){
-        //         int nTake = 0+dp[i-1][j];
-        //         int take = Integer.MIN_VALUE;
-        //         if(wt[i]<=j){
-        //             take = val[i]+dp[i-1][j-wt[i]];
-        //         }
-        //         dp[i][j]=Math.max(nTake,take);
-        //       }
-        //   }
-        //   return dp[n-1][W];
-    } 
+        int prev[] = new int[W + 1];
+        int curr[] = new int[W + 1];
+    
+        // Initialize the prev array for the first item
+        for (int w = wt[0]; w <= W; w++) {
+            prev[w] = val[0];
+        }
+    
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j <= W; j++) {
+                int nTake = prev[j];  // Not taking the item
+                int take = Integer.MIN_VALUE;
+                if (wt[i] <= j) {
+                    take = val[i] + prev[j - wt[i]];  // Taking the item
+                }
+                curr[j] = Math.max(nTake, take);
+            }
+            // Copy current row to previous row for the next iteration
+            prev = curr.clone();
+        }
+        return prev[W];
+    }
+ 
 }
 
 
