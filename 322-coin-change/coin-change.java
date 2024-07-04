@@ -5,9 +5,9 @@ class Solution {
             return (int)1e9;
         }
         if(dp[ind][amount]!=-1) return dp[ind][amount];
-        int take = 0+soln(ind-1,coins,amount,dp);
-        int nTake = Integer.MAX_VALUE;
-        if(amount>=coins[ind]) nTake = 1+soln(ind,coins,amount-coins[ind],dp);
+        int nTake = 0+soln(ind-1,coins,amount,dp);
+        int take = Integer.MAX_VALUE;
+        if(amount>=coins[ind]) take = 1+soln(ind,coins,amount-coins[ind],dp);
         return dp[ind][amount]=Math.min(take,nTake);
     }
     public int coinChange(int[] coins, int amount) {
