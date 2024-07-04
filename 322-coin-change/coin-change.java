@@ -15,25 +15,30 @@ class Solution {
     }
 
     public int coinChange(int[] coins, int amount) {
-        int[] prev = new int[amount + 1];
-        int[] curr = new int[amount + 1];
+        int[] dp = new int[amount + 1];
+
+        // Initialize the dp array
         for (int i = 0; i <= amount; i++) {
             if (i % coins[0] == 0)
-                prev[i] = i / coins[0];
+                dp[i] = i / coins[0];
             else
-                prev[i] = (int) 1e9;
+                dp[i] = (int) 1e9; // Use a high value to represent infinity
         }
+
+        // Fill the dp table
         for (int i = 1; i < coins.length; i++) {
             for (int j = 0; j <= amount; j++) {
-                int nTake = prev[j];
+                int nTake = dp[j];
                 int take = Integer.MAX_VALUE;
-                if (coins[i]<=j)
-                    take = 1 + curr[j - coins[i]];
-                curr[j] = Math.min(take, nTake);
+                if (coins[i] <= j)
+                    take = 1 + dp[j - coins[i]];
+                dp[j] = Math.min(take, nTake);
             }
-            prev = curr.clone();
         }
-        if(prev[amount]>=1e9) return -1;
-        return prev[amount];
+
+        if (dp[amount] >= (int) 1e9)
+            return -1;
+        return dp[amount];
     }
+
 }
