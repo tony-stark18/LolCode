@@ -15,23 +15,25 @@ class Solution {
     }
 
     public int coinChange(int[] coins, int amount) {
-        int[][] dp = new int[coins.length][amount + 1];
+        int[] prev = new int[amount + 1];
+        int[] curr = new int[amount + 1];
         for (int i = 0; i <= amount; i++) {
             if (i % coins[0] == 0)
-                dp[0][i] = i / coins[0];
+                prev[i] = i / coins[0];
             else
-                dp[0][i] = (int) 1e9;
+                prev[i] = (int) 1e9;
         }
         for (int i = 1; i < coins.length; i++) {
             for (int j = 0; j <= amount; j++) {
-                int nTake = dp[i - 1][j];
+                int nTake = prev[j];
                 int take = Integer.MAX_VALUE;
                 if (coins[i]<=j)
-                    take = 1 + dp[i][j - coins[i]];
-                dp[i][j] = Math.min(take, nTake);
+                    take = 1 + curr[j - coins[i]];
+                curr[j] = Math.min(take, nTake);
             }
+            prev = curr.clone();
         }
-        if(dp[coins.length-1][amount]>=1e9) return -1;
-        return dp[coins.length-1][amount];
+        if(prev[amount]>=1e9) return -1;
+        return prev[amount];
     }
 }
