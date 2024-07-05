@@ -19,18 +19,16 @@ class Solution {
         // Arrays.fill(dp[i], -1);
         // }
         // return soln(arr1, arr2, arr1.length - 1, arr2.length - 1, dp);
-        int dp[][] = new int[arr1.length + 1][arr2.length + 1];
-        for (int i = 0; i < arr1.length; i++) {
-            dp[i][0] = 1;
-        }
+        int prev[] = new int[arr2.length + 1];
+        // int curr[] = new int[arr2.length + 1];
+        prev[0]=1;
+        // curr[0]=1;
         for (int i = 1; i <= arr1.length; i++) {
             for (int j = arr2.length; j >=1; j--) {
                 if (arr1[i-1] == arr2[j-1])
-                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
-                else
-                    dp[i][j] = dp[i - 1][j];
+                    prev[j] = prev[j - 1] + prev[j];
             }
         }
-        return dp[arr1.length][arr2.length];
+        return prev[arr2.length];
     }
 }
