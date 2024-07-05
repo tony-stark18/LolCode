@@ -24,7 +24,7 @@ class Solution {
             dp[i][0] = 1;
         }
         for (int i = 1; i <= arr1.length; i++) {
-            for (int j = 1; j <= arr2.length; j++) {
+            for (int j = arr2.length; j >=1; j--) {
                 if (arr1[i-1] == arr2[j-1])
                     dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
                 else
