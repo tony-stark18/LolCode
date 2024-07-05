@@ -1,44 +1,50 @@
 /**
  * Definition for singly-linked list.
  * public class ListNode {
- * int val;
- * ListNode next;
- * ListNode() {}
- * ListNode(int val) { this.val = val; }
- * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
 class Solution {
     public int[] nodesBetweenCriticalPoints(ListNode head) {
-        ListNode prev = null;
-        ListNode curr = head;
+        ListNode previous = null;
+        ListNode current = head;
         ListNode next;
-        int first = -1;
-        int lastCritical = -1;
-        int last = -1;
-        int ind = 0;
-        int minD = Integer.MAX_VALUE;
-        while (curr != null) {
-            next = curr.next;
-            ind++;
-            if (prev != null && next != null
-                    && ((prev.val > curr.val && curr.val < next.val) || (prev.val < curr.val && curr.val > next.val))) {
-                if (first == -1) {
-                    first = ind;
+        int firstCriticalPointIndex = -1;
+        int lastCriticalPointIndex = -1;
+        int currentIndex = 0;
+        int minimumDistance = Integer.MAX_VALUE;
+
+        while (current != null) {
+            next = current.next;
+            currentIndex++;
+
+            if (previous != null && next != null &&
+                ((previous.val > current.val && current.val < next.val) ||
+                 (previous.val < current.val && current.val > next.val))) {
+                 
+                if (firstCriticalPointIndex == -1) {
+                    firstCriticalPointIndex = currentIndex;
+                } else {
+                    minimumDistance = Math.min(minimumDistance, currentIndex - lastCriticalPointIndex);
                 }
-                else{
-                    minD = Math.min(minD,ind-lastCritical);
-                }
-                lastCritical = ind;
+                lastCriticalPointIndex = currentIndex;
             }
-            prev = curr;
-            curr = next;
+
+            previous = current;
+            current = next;
         }
-        int arr[] = { -1, -1 };
-        if (first == -1 || first==lastCritical)
-            return arr;
-        arr[0] = minD;
-        arr[1] = lastCritical - first;
-        return arr;
+
+        int result[] = { -1, -1 };
+        if (firstCriticalPointIndex == -1 || firstCriticalPointIndex == lastCriticalPointIndex) {
+            return result;
+        }
+
+        result[0] = minimumDistance;
+        result[1] = lastCriticalPointIndex - firstCriticalPointIndex;
+        return result;
     }
 }
