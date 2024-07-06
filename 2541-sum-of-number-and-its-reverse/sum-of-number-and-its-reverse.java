@@ -9,7 +9,7 @@ class Solution {
     }
     public boolean sumOfNumberAndReverse(int num) {
         if(num==0) return true;
-        for(int i=1;i<=num;i++){
+        for(int i=num/2;i<=num;i++){
             if(i+rev(i)==num) return true;
         }
         return false;
