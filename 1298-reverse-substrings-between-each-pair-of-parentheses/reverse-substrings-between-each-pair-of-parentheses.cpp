@@ -1,29 +1,23 @@
 class Solution {
 public:
     string reverseParentheses(string s) {
-        stack<char> st;
-        for(int i=0;i<s.length();i++){
-            if(s[i]==')'){
-                vector<char> temp;
-                while(st.top()!='('){
-                    temp.push_back(st.top());
-                    st.pop();
-                }
-                st.pop();
-                for(char c:temp){
-                    st.push(c);
-                }
-            }
-            else{
-                st.push(s[i]);
+        vector<deque<char>> deques(1);  // A list of deques to handle nested parentheses
+        for (char c : s) {
+            if (c == '(') {
+                deques.emplace_back();  // Start a new deque for the new level of nested parentheses
+            } else if (c == ')') {
+                deque<char> temp = move(deques.back());
+                deques.pop_back();
+                copy(temp.rbegin(), temp.rend(), back_inserter(deques.back()));
+            } else {
+                deques.back().push_back(c);
             }
         }
-        string ss;
-        while(!st.empty()){
-            ss+=st.top();
-            st.pop();
+        // Combine all characters from the deque into the final string
+        string result;
+        for (char c : deques[0]) {
+            result.push_back(c);
         }
-        reverse(ss.begin(),ss.end());
-        return ss;
+        return result;
     }
 };
