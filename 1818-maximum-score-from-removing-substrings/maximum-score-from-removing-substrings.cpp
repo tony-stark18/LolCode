@@ -1,45 +1,52 @@
 class Solution {
 public:
     int maximumGain(string s, int x, int y) {
-        // Helper function to process the string and calculate the points
-        auto process = [&](char first, char second, int points) {
-            stack<char> st;
-            int score = 0;
-            for (char c : s) {
-                if (!st.empty() && st.top() == first && c == second) {
-                    score += points;
+        stack<char> st;
+        int ans = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (x > y) {
+                if (!st.empty() && s[i] == 'b' && st.top() == 'a') {
+                    ans += x;
                     st.pop();
                 } else {
-                    st.push(c);
+                    st.push(s[i]);
+                }
+            } else  {
+                if (!st.empty() && s[i] == 'a' && st.top() == 'b') {
+                    ans += y;
+                    st.pop();
+                } else {
+                    st.push(s[i]);
                 }
             }
-            // Convert stack to string to re-process remaining characters
-            string remaining;
-            while (!st.empty()) {
-                remaining.push_back(st.top());
-                st.pop();
-            }
-            reverse(remaining.begin(), remaining.end());
-            return make_pair(score, remaining);
-        };
-
-        int totalScore = 0;
-
-        // Process the string based on higher value pairs first
-        if (x > y) {
-            auto [score, remaining] = process('a', 'b', x);
-            totalScore += score;
-            s = remaining;
-            tie(score, remaining) = process('b', 'a', y);
-            totalScore += score;
-        } else {
-            auto [score, remaining] = process('b', 'a', y);
-            totalScore += score;
-            s = remaining;
-            tie(score, remaining) = process('a', 'b', x);
-            totalScore += score;
         }
-
-        return totalScore;
+        vector<char> rmn;
+        while (!st.empty()) {
+            rmn.push_back(st.top());
+            st.pop();
+        }
+        reverse(rmn.begin(),rmn.end());
+        for(char c:rmn){
+            cout<<c;
+        }
+        // cout<<st.size();
+        for (int i = 0; i < rmn.size(); i++) {
+            if (x > y) {
+                if (!st.empty() && rmn[i] == 'a' && st.top() == 'b') {
+                    ans += y;
+                    st.pop();
+                } else {
+                    st.push(rmn[i]);
+                }
+            } else  {
+                if (!st.empty() && rmn[i] == 'b' && st.top() == 'a') {
+                    ans += x;
+                    st.pop();
+                } else {
+                    st.push(rmn[i]);
+                }
+            }
+        }
+        return ans;
     }
 };
