@@ -1,29 +1,33 @@
 class Solution {
 public:
     int minDeletions(string s) {
-        int freq[26];
-        for(int i=0;i<s.length();i++){
-            freq[s[i]-'a']++;
+        int freq[26] = {0};
+        for (char c : s) {
+            freq[c - 'a']++;
         }
+
         vector<int> fr;
-        for(int i=0;i<26;i++){
-            if(freq[i]!=0){
+        for (int i = 0; i < 26; ++i) {
+            if (freq[i] != 0) {
                 fr.push_back(freq[i]);
             }
         }
-        sort(fr.begin(),fr.end());
-        for(int i:fr){
-            cout<<i<<" ";
-        }
-        unordered_map<int,int> mp;
-        int ans = 0;
-        for(int i=0;i<fr.size();i++){
-            while(mp.find(fr[i])!=mp.end()){
-                ans++;
-                fr[i]--;
+
+        sort(fr.begin(), fr.end(), greater<int>());
+
+        unordered_set<int> seenFreqs;
+        int deletions = 0;
+        
+        for (int f : fr) {
+            while (f > 0 && seenFreqs.find(f) != seenFreqs.end()) {
+                f--;
+                deletions++;
             }
-            if(fr[i]!=0) mp.insert({fr[i],0});
+            if (f > 0) {
+                seenFreqs.insert(f);
+            }
         }
-        return ans;
+
+        return deletions;
     }
 };
