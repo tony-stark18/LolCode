@@ -17,29 +17,25 @@ class Solution {
 
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int[][][] dp = new int[n + 1][2][3];
-        // for (int i = 0; i <= n; i++) {
-        //     for (int j = 0; j < 2; j++) {
-        //         for (int k = 0; k < 3; k++) {
-        //             dp[i][j][k] = 0;
-        //         }
-        //     }
-        // }
+        int[][] after = new int[2][3];
+        int[][] curr = new int[2][3];
+
         for (int ind = prices.length - 1; ind >= 0; ind--) {
             for (int holding = 0; holding <= 1; holding++) {
                 for (int cap = 2; cap > 0; cap--) {
                     if (holding == 0) {
-                        int buy = -prices[ind] + dp[ind + 1][1][cap];
-                        int skip = 0 + dp[ind + 1][0][cap];
-                        dp[ind][holding][cap] = Math.max(buy, skip);
+                        int buy = -prices[ind] + after[1][cap];
+                        int skip = 0 + after[0][cap];
+                        curr[holding][cap] = Math.max(buy, skip);
                     } else {
-                        int sell = prices[ind] + dp[ind + 1][0][cap - 1];
-                        int nSell = dp[ind + 1][1][cap];
-                        dp[ind][holding][cap] = Math.max(sell, nSell);
+                        int sell = prices[ind] + after[0][cap - 1];
+                        int nSell = after[1][cap];
+                        curr[holding][cap] = Math.max(sell, nSell);
                     }
                 }
             }
+            after = curr.clone();
         }
-        return dp[0][0][2];
+        return after[0][2];
     }
 }
