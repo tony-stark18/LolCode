@@ -1,71 +1,42 @@
 class Solution {
-    public void depth(TreeNode root, int target, int ans[], int depth) {
-        if (root == null)
-            return;
-        if (root.val == target) {
-            ans[0] = depth;
-            return;
-        }
-        depth(root.left, target, ans, depth + 1);
-        depth(root.right, target, ans, depth + 1);
-    }
-
-    public void getPath(TreeNode root, int target, StringBuilder sb, StringBuilder path) {
-        if (root == null)
-            return;
-        if (root.val == target) {
-            sb.append(path);
-            return;
-        }
+    public boolean findPath(TreeNode root, int target, StringBuilder path) {
+        if (root == null) return false;
+        if (root.val == target) return true;
+        
         path.append('L');
-        getPath(root.left, target, sb, path);
-        path.setLength(path.length() - 1);
+        if (findPath(root.left, target, path)) return true;
+        path.setLength(path.length() - 1); // backtrack
+        
         path.append('R');
-        getPath(root.right, target, sb, path);
-        path.setLength(path.length() - 1);
-    }
-
-    public boolean soln(TreeNode root, int s, int d, StringBuilder sb) {
-        if (root == null)
-            return false;
-        boolean leftR = soln(root.left, s, d, sb);
-        boolean rightR = soln(root.right, s, d, sb);
-        if (root.val == s || root.val == d) {
-            if (leftR || rightR) {
-                int ans[] = new int[1];
-                depth(root, s, ans, 0);
-                int sDepth = ans[0];
-                depth(root, d, ans, 0);
-                int dDepth = ans[0];
-                if (dDepth < sDepth) {
-                    for (int i = 0; i < (sDepth - dDepth); i++) {
-                        sb.append('U');
-                    }
-                } else {
-                    StringBuilder ssb = new StringBuilder("");
-                    getPath(root, d, sb, ssb);
-                }
-                return false;
-            }
-            return true;
-        } else if (leftR && rightR) {
-            int ans[] = new int[1];
-            depth(root, s, ans, 0);
-            int sDepth = ans[0];
-            for (int i = 0; i < sDepth; i++) {
-                sb.append('U');
-            }
-            StringBuilder ssb = new StringBuilder("");
-            getPath(root, d, sb, ssb);
-            return false;
-        }
-        return leftR || rightR;
+        if (findPath(root.right, target, path)) return true;
+        path.setLength(path.length() - 1); // backtrack
+        
+        return false;
     }
 
     public String getDirections(TreeNode root, int s, int d) {
-        int depth[] = new int[1];
-        StringBuilder sb = new StringBuilder("");
-        soln(root, s, d, sb);
-        return sb.toString();
+        StringBuilder pathToS = new StringBuilder();
+        StringBuilder pathToD = new StringBuilder();
+
+        findPath(root, s, pathToS);
+        findPath(root, d, pathToD);
+
+        // Find common path length
+        int commonPathLength = 0;
+        while (commonPathLength < pathToS.length() && commonPathLength < pathToD.length()
+                && pathToS.charAt(commonPathLength) == pathToD.charAt(commonPathLength)) {
+            commonPathLength++;
+        }
+
+        // Steps to move up from s to the common ancestor
+        StringBuilder result = new StringBuilder();
+        for (int i = commonPathLength; i < pathToS.length(); i++) {
+            result.append('U');
+        }
+
+        // Steps to move down from the common ancestor to d
+        result.append(pathToD.substring(commonPathLength));
+
+        return result.toString();
     }
 }
