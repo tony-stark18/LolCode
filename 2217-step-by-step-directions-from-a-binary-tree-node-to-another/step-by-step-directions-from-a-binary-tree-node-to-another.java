@@ -1,18 +1,3 @@
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- * int val;
- * TreeNode left;
- * TreeNode right;
- * TreeNode() {}
- * TreeNode(int val) { this.val = val; }
- * TreeNode(int val, TreeNode left, TreeNode right) {
- * this.val = val;
- * this.left = left;
- * this.right = right;
- * }
- * }
- */
 class Solution {
     public void depth(TreeNode root, int target, int ans[], int depth) {
         if (root == null)
@@ -29,15 +14,15 @@ class Solution {
         if (root == null)
             return;
         if (root.val == target) {
-            sb.append(path); // Append the found path to sb
+            sb.append(path);
             return;
         }
         path.append('L');
         getPath(root.left, target, sb, path);
-        path.setLength(path.length() - 1); // Remove the last character
+        path.setLength(path.length() - 1);
         path.append('R');
         getPath(root.right, target, sb, path);
-        path.setLength(path.length() - 1); // Remove the last character
+        path.setLength(path.length() - 1);
     }
 
     public boolean soln(TreeNode root, int s, int d, StringBuilder sb) {
@@ -71,7 +56,7 @@ class Solution {
                 sb.append('U');
             }
             StringBuilder ssb = new StringBuilder("");
-            getPath(root, d, sb,ssb);
+            getPath(root, d, sb, ssb);
             return false;
         }
         return leftR || rightR;
@@ -79,8 +64,6 @@ class Solution {
 
     public String getDirections(TreeNode root, int s, int d) {
         int depth[] = new int[1];
-        // depth(root,2,depth,0);
-        // System.out.println(depth[0]);
         StringBuilder sb = new StringBuilder("");
         soln(root, s, d, sb);
         return sb.toString();
