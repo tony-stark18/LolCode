@@ -18,29 +18,27 @@ class Solution {
         map['-'] = 1;
         string ans = "";
         for(int i=0;i<s.length();i++){
-            char ch = s[i];
-            if((ch>='A' && ch<='Z') || (ch>='a' && ch<='z') || (ch>='0' && ch<='9')){
-                ans+=ch;
+            char c = s[i];
+            if((c>='A' && c<='Z') || (c>='a' && c<='z') || (c>='0' && c<='9')){
+                ans+=c;
             }
-            else if(ch=='(')
-                st.push(ch);
-            else if(ch==')'){
-                while(!st.empty() && st.top()!='('){
+            else if(c=='('){
+                st.push(c);
+            }
+            else if(c==')'){
+                while(st.top()!='('){
                     ans+=st.top();
                     st.pop();
                 }
-                if(!st.empty()){
-                    st.pop(); // Pop the '('
-                }
+                st.pop();
             }
             else{
-                while(!st.empty() && map[ch] <= map[st.top()]){
-                    ans += st.top();
+                while(!st.empty() && map[c]<=map[st.top()]){
+                    ans+=st.top();
                     st.pop();
                 }
-                st.push(ch);
+                st.push(c);
             }
-                
         }
         while(!st.empty()){
             ans+=st.top();
