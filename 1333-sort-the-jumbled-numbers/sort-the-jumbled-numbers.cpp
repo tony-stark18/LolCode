@@ -1,36 +1,31 @@
 class Solution {
 public:
-    int modify(int num,int digMap[]){
-        if(num==0) return digMap[0];
-        int ans = 0;
-        stack<int> st;
-        while(num>0){
-            st.push(num%10);
-            num = num/10;
-        }
-        while(!st.empty()){
-            ans = ans*10+digMap[st.top()];
-            st.pop();
+    int modify(int num, const vector<int>& digMap) {
+        if (num == 0) return digMap[0];
+        int ans = 0, factor = 1;
+        while (num > 0) {
+            ans += digMap[num % 10] * factor;
+            num /= 10;
+            factor *= 10;
         }
         return ans;
     }
+
     vector<int> sortJumbled(vector<int>& mapping, vector<int>& nums) {
-        int digMap[10];
-        for(int i=0;i<10;i++){
-            digMap[i]=mapping[i];
+        vector<pair<int, int>> res(nums.size());
+        for (size_t i = 0; i < nums.size(); ++i) {
+            res[i] = {modify(nums[i], mapping), nums[i]};
         }
-        vector<pair<int,int>> res;
-        for(int num:nums){
-            res.push_back({modify(num,digMap),num});
-        }
-        sort(res.begin(),res.end(),[](const pair<int,int>& p1,const pair<int,int>& p2){
-            if(p1.first==p2.first) return false;
-            return p1.first<p2.first;
+
+        sort(res.begin(), res.end(), [](const pair<int, int>& p1, const pair<int, int>& p2) {
+            return p1.first < p2.first;
         });
-        vector<int> ans;
-        for(auto i:res){
-            ans.push_back(i.second);
+
+        vector<int> ans(nums.size());
+        for (size_t i = 0; i < res.size(); ++i) {
+            ans[i] = res[i].second;
         }
+
         return ans;
     }
 };
