@@ -37,7 +37,8 @@ class Solution {
         }
     }
     public int[] sortArray(int[] nums) {
-        mergeSort(nums,0,nums.length-1);
+        // mergeSort(nums,0,nums.length-1);
+        Arrays.sort(nums);
         return nums;
     }
 }
