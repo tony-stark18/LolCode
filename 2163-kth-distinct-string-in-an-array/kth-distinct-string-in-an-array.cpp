@@ -1,15 +1,17 @@
 class Solution {
 public:
-    string kthDistinct(vector<string>& arr, int k) {
+    string kthDistinct(const vector<string>& arr, int k) {
         unordered_map<string, int> map;
-        for (auto it : arr) {
+        for (const auto& it : arr) {
             map[it]++;
         }
-        for(auto it : arr){
-            if(map[it]==1){
+        for (const auto& it : arr) {
+            if (map[it] == 1) {
                 k--;
+                if (k == 0) {
+                    return it;
+                }
             }
-            if(k==0) return it;
         }
         return "";
     }
