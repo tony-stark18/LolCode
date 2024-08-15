@@ -2,6 +2,7 @@ class Solution {
 public:
     vector<vector<string>> suggestedProducts(vector<string>& products, string searchWord) {
         sort(products.begin(),products.end());
+        for(auto it:products) cout<<it<<" ";
         vector<vector<string>> ans;
         for(int i=0;i<searchWord.length();i++){
             vector<string> words;
