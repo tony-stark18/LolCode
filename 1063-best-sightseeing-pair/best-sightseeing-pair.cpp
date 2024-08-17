@@ -1,18 +1,17 @@
 class Solution {
 public:
     int maxScoreSightseeingPair(vector<int>& values) {
-        vector<int> secondMax(values.size());
-        int sMax = INT_MIN;
-        for(int i=values.size()-1;i>=0;i--){
-            sMax = max(sMax,values[i]-i);
-            secondMax[i]=sMax;
-        }
-        int fMax = INT_MIN;
+        int maxSoFar = values[0]; // Initialize with the first element (values[0] + 0)
         int ans = INT_MIN;
-        for(int i=0;i<values.size()-1;i++){
-            fMax = max(fMax,values[i]+i);
-            ans = max(ans,fMax+secondMax[i+1]);
+
+        for (int i = 1; i < values.size(); ++i) {
+            // Calculate the current max sightseeing score
+            ans = max(ans, maxSoFar + values[i] - i);
+
+            // Update maxSoFar for the next iteration
+            maxSoFar = max(maxSoFar, values[i] + i);
         }
+
         return ans;
     }
 };
