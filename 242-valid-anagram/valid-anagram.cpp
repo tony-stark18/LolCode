@@ -1,3 +1,6 @@
+int IO = []{
+    ios::sync_with_stdio(false); cin.tie(nullptr); return 0;
+}();
 class Solution {
 public:
     bool isAnagram(string s, string t) {
