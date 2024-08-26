@@ -25,9 +25,7 @@ public:
         vector<int> ans;
         for(auto it:root->children){
             vector<int> temp = postorder(it);
-            for(auto el:temp){
-                ans.push_back(el);
-            }
+            ans.insert(ans.end(),temp.begin(),temp.end());
         }
         ans.push_back(root->val);
         return ans;
