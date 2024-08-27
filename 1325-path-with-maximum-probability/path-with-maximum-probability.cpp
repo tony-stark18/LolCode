@@ -1,40 +1,32 @@
 class Solution {
 public:
-    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+    double maxProbability(int n, vector<vector<int>>& edges,
+                          vector<double>& succProb, int start_node,
+                          int end_node) {
         vector<vector<pair<int, double>>> adj(n);
-        int k = 0;
-        for (auto it : edges) {
-            adj[it[0]].push_back({it[1], succProb[k]});
-            adj[it[1]].push_back({it[0], succProb[k]});
-            k++;
+        for (int i = 0; i < edges.size(); i++) {
+            adj[edges[i][0]].push_back({edges[i][1], succProb[i]});
+            adj[edges[i][1]].push_back({edges[i][0], succProb[i]});
         }
-        
         priority_queue<pair<double, int>> pq;
-        vector<double> probability(n, 0.0);  // Initialize with 0.0
-        probability[start_node] = 1.0;
+        vector<double> probabilities(n, 0.0);
         pq.push({1.0, start_node});
-        
+        probabilities[start_node] = 1.0;
         while (!pq.empty()) {
-            auto it = pq.top();
+            double prob = pq.top().first;
+            int node = pq.top().second;
             pq.pop();
-            double prob = it.first;
-            int node = it.second;
-            
-            if (node == end_node) {
+            if (node == end_node)
                 return prob;
-            }
-            
-            for (auto& neighbor : adj[node]) {
-                int next_node = neighbor.first;
-                double edge_prob = neighbor.second;
-                
-                if (prob * edge_prob > probability[next_node]) {
-                    probability[next_node] = prob * edge_prob;
-                    pq.push({probability[next_node], next_node});
+            for (auto& it : adj[node]) {
+                int currNode = it.first;
+                double edgeProb = it.second;
+                if (probabilities[currNode] < prob * edgeProb) {
+                    probabilities[currNode] = prob * edgeProb;
+                    pq.push({probabilities[currNode], currNode});
                 }
             }
         }
-        
-        return 0.0;  // If no path exists, return 0.0
+        return 0.0;
     }
 };
