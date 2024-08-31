@@ -1,32 +1,33 @@
 class Solution {
 public:
-    double maxProbability(int n, vector<vector<int>>& edges,
-                          vector<double>& succProb, int start_node,
-                          int end_node) {
-        vector<vector<pair<int, double>>> adj(n);
-        for (int i = 0; i < edges.size(); i++) {
-            adj[edges[i][0]].push_back({edges[i][1], succProb[i]});
-            adj[edges[i][1]].push_back({edges[i][0], succProb[i]});
+    double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        vector<vector<pair<int,double>>> adj(n);
+        for(int i=0;i<edges.size();i++){
+            auto it = edges[i];
+            adj[it[0]].push_back({it[1],succProb[i]});
+            adj[it[1]].push_back({it[0],succProb[i]});
         }
-        priority_queue<pair<double, int>> pq;
-        vector<double> probabilities(n, 0.0);
-        pq.push({1.0, start_node});
-        probabilities[start_node] = 1.0;
-        while (!pq.empty()) {
-            double prob = pq.top().first;
-            int node = pq.top().second;
+        priority_queue<pair<double,int>> pq;
+        pq.push({1.0,start_node});
+        vector<double> probability(n,0.0);
+        probability[start_node]=1.0;
+        while(!pq.empty()){
+            auto it = pq.top();
             pq.pop();
-            if (node == end_node)
-                return prob;
-            for (auto& it : adj[node]) {
-                int currNode = it.first;
-                double edgeProb = it.second;
-                if (probabilities[currNode] < prob * edgeProb) {
-                    probabilities[currNode] = prob * edgeProb;
-                    pq.push({probabilities[currNode], currNode});
+            double prob = it.first;
+            int node = it.second;
+            if(node==end_node) return prob;
+
+            for(auto it:adj[node]){
+            int adj_node = it.first;
+                double edge_prob = it.second;
+
+                if(prob*edge_prob>probability[adj_node]){
+                    probability[adj_node] = prob*edge_prob;
+                    pq.push({probability[adj_node],adj_node});
                 }
             }
         }
-        return 0.0;
+        return 0;
     }
-};
+};  
