@@ -1,3 +1,6 @@
+int IO = []{
+    ios::sync_with_stdio(false); cin.tie(nullptr); return 0;
+}();
 class Solution {
 public:
     vector<vector<int>> construct2DArray(vector<int>& original, int m, int n) {
