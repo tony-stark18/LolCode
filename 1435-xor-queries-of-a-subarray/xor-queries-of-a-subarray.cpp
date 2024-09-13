@@ -1,13 +1,20 @@
 class Solution {
 public:
     vector<int> xorQueries(vector<int>& arr, vector<vector<int>>& queries) {
+        vector<int> xorR;
+        int xorV = 0;
+        for(auto& it:arr){
+            xorV^=it;
+            xorR.push_back(xorV);
+        }
         vector<int> ans;
         for(auto it:queries){
-            int xorr = 0;
-            for(int i=it[0];i<=it[1];i++){
-                xorr^=arr[i];    
+            if(it[0]==0){
+                ans.push_back(xorR[it[1]]);
             }
-            ans.push_back(xorr);
+            else{
+                ans.push_back(xorR[it[1]]^xorR[it[0]-1]);
+            }
         }
         return ans;
     }
