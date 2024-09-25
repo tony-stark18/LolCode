@@ -10,7 +10,7 @@ public:
         }
         return true;
     }
-    int f(int i,int n, string s, vector<int>& dp) {
+    int f(int i,int n, string &s, vector<int>& dp) {
         if (isPalindrome(s,i,n-1))
             return 0;
         if (dp[i] != -1)
