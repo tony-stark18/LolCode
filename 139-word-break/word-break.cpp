@@ -1,6 +1,6 @@
 class Solution {
 public:
-    bool f(int i,int n,string s,unordered_set<string> &set,vector<int> &dp){
+    bool f(int i,int n,string &s,unordered_set<string> &set,vector<int> &dp){
         if(i==n) return true;
         if(dp[i]!=-1) return dp[i];
         bool ans = false;
