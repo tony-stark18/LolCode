@@ -26,7 +26,7 @@ public:
         }
         return dp[i] = min_cuts;
     }
-    int minCut(string str) {
+    int minCut(string &str) {
         int n = str.size();
         // Create a DP array to store the minimum number of partitions.
         vector<int> dp(n + 1, 0);
