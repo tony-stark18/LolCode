@@ -5,7 +5,7 @@ public:
         for(int i=0;i<nums.size();i++){
             if(i>maxIcanReach) return false;
             maxIcanReach = max(maxIcanReach,i+nums[i]);
-            if(maxIcanReach>=nums.size()) return true;
+            // if(maxIcanReach>=nums.size()) return true;
         }
         return true;
     }
