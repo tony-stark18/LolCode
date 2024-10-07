@@ -27,6 +27,8 @@ class Recursion {
 // } Driver Code Ends
 
 
+
+
 // User function Template for Java
 
 // avoid space at the starting of the string in "move disk....."
@@ -38,9 +40,7 @@ class Hanoi {
         }
         long ans = 1;
         ans+= toh(n - 1, from, aux, to);
-        System.out.println("move disk " + n + " from rod "
-                           + from + " to rod "
-                           + to);
+        System.out.println("move disk " + n + " from rod " + from + " to rod "  + to);
         ans += toh(n - 1, aux, to, from);
         return ans;
     }
