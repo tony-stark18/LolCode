@@ -1,29 +1,16 @@
 class Solution {
 public:
     int minSwaps(string s) {
-        int balance = 0;
-        int l = 0;
-        int r = s.length()-1;
-        int count = 0;
-        while(l<r){
-            char c = s[l];
-            if(c=='[') balance++;
-            else balance--;
-            if(balance<0){
-                while(r>l){
-                    if(s[r]=='['){
-                        swap(s[l],s[r]);
-                        balance+=2;
-                        count++;
-                        break;
-                    }
-                    r--;
-                }
+        int size = 0;
+        int n = s.size();
+        for (int i = 0; i < n; i++) {
+            char ch = s[i];
+            if (ch == '[')
+                size++;
+            else {
+                if (size > 0) size--;
             }
-            l++;
         }
-        cout<<s;
-        return count;
-
+        return (size + 1) / 2;
     }
 };
