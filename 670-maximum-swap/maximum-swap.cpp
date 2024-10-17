@@ -13,13 +13,11 @@ public:
             }
             temp[i] = maxI;
         }
-        // cout<<maxI;
         for(int i=0;i<n;i++){
             if(temp[i]!=i){
                 swap(s[i],s[temp[i]]);
                 return stoi(s);
             }
-            cout<<temp[i]<<" ";
         }
         return stoi(s);
     }
