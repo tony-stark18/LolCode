@@ -12,14 +12,6 @@
  */
 class Solution {
 public:
-    // int get_depth(TreeNode* root){
-    //     if(root==nullptr){
-    //         return 0;
-    //     }
-    //     int ld = get_depth(root->left);
-    //     int rd = get_depth(root->right);
-    //     return max(ld,rd)+1;
-    // }
     void soln(TreeNode* root, vector<long long>& sums, int d) {
         if (root == nullptr) {
             return;
@@ -34,8 +26,6 @@ public:
         soln(root->right, sums, d + 1);
     }
     long long kthLargestLevelSum(TreeNode* root, int k) {
-        // int depth = get_depth(root);
-        // if(k>depth) return -1;
         vector<long long> sums;
         soln(root, sums, 0);
         sort(sums.begin(), sums.end(),
