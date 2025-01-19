@@ -1,51 +1,33 @@
 class Solution {
 public:
     int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        if(grid[0][0]==1) return -1;
         int n = grid.size();
-        if (grid[0][0] != 0 || grid[n - 1][n - 1] != 0)
-            return -1;
-
-        vector<vector<int>> gScore(n, vector<int>(n, 1e9));
-        gScore[0][0] = 1;  // Start from (0, 0), gScore is 1
-
-        auto heuristic = [n](int r, int c) {
-            return max(n - 1 - r, n - 1 - c);  // Manhattan distance
-        };
-
-        priority_queue<pair<int, pair<int, int>>,
-                       vector<pair<int, pair<int, int>>>,
-                       greater<pair<int, pair<int, int>>>> pq;
-        pq.push({1 + heuristic(0, 0), {0, 0}});  // Push starting point with F-Score
-
-        vector<pair<int, int>> directions = {
-            {-1, 0}, {1, 0}, {0, -1}, {0, 1},
-            {-1, -1}, {1, 1}, {-1, 1}, {1, -1}
-        };
-
-        while (!pq.empty()) {
-            auto [fScore, pos] = pq.top();
+        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
+        pq.push({1,{0,0}});
+        vector<vector<int>> visited(n,vector<int>(n,0));
+        vector<vector<int>> distance(n,vector<int>(n,1e9));
+        visited[0][0]=1;
+        distance[0][0] = 1;
+        while(!pq.empty()){
+            auto it = pq.top();
             pq.pop();
-            int row = pos.first, col = pos.second;
-
-            // Early exit if we reach the bottom-right corner
-            if (row == n - 1 && col == n - 1)
-                return gScore[row][col];
-
-            for (auto& dir : directions) {
-                int nr = row + dir.first;
-                int nc = col + dir.second;
-
-                if (nr >= 0 && nr < n && nc >= 0 && nc < n && grid[nr][nc] == 0) {
-                    int tentative_gScore = gScore[row][col] + 1;
-                    if (tentative_gScore < gScore[nr][nc]) {
-                        gScore[nr][nc] = tentative_gScore;
-                        int hScore = heuristic(nr, nc);
-                        pq.push({tentative_gScore + hScore, {nr, nc}});
+            int dist = it.first;
+            int r = it.second.first;
+            int c = it.second.second;
+            if(r==n-1 && c==n-1) return dist;
+            for(int i=-1;i<=1;i++){
+                for(int j=-1;j<=1;j++){
+                    int nr = r+i;
+                    int nc = c+j;
+                    if(nr>=0 && nr<n && nc>=0 && nc<n && !visited[nr][nc] && !grid[nr][nc] && distance[nr][nc]>dist+1){
+                        pq.push({dist+1,{nr,nc}});
+                        visited[nr][nc]=1;
+                        distance[nr][nc]=dist+1;
                     }
                 }
             }
         }
-
-        return -1;  // No path found
+        return -1;
     }
 };
