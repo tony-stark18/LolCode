@@ -5,9 +5,7 @@ public:
         int n = grid.size();
         priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,greater<pair<int,pair<int,int>>>> pq;
         pq.push({1,{0,0}});
-        vector<vector<int>> visited(n,vector<int>(n,0));
         vector<vector<int>> distance(n,vector<int>(n,1e9));
-        visited[0][0]=1;
         distance[0][0] = 1;
         while(!pq.empty()){
             auto it = pq.top();
@@ -20,9 +18,8 @@ public:
                 for(int j=-1;j<=1;j++){
                     int nr = r+i;
                     int nc = c+j;
-                    if(nr>=0 && nr<n && nc>=0 && nc<n && !visited[nr][nc] && !grid[nr][nc] && distance[nr][nc]>dist+1){
+                    if(nr>=0 && nr<n && nc>=0 && nc<n && !grid[nr][nc] && distance[nr][nc]>dist+1){
                         pq.push({dist+1,{nr,nc}});
-                        visited[nr][nc]=1;
                         distance[nr][nc]=dist+1;
                     }
                 }
