@@ -14,10 +14,9 @@ public:
         times[0] = 0;
         ways[0] = 1;
         while(!pq.empty()){
-            auto it = pq.top();
+            auto [time,node] = pq.top();
             pq.pop();
-            long long int time = it.first;
-            int node = it.second;
+            if(time>times[node]) continue;
             for(auto it:adj[node]){
                 int adj_node = it.first;
                 long long int edge_time = it.second;
