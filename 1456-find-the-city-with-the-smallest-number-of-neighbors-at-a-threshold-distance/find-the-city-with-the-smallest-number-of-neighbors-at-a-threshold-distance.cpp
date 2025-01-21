@@ -1,51 +1,44 @@
 class Solution {
 public:
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        // Initialize the distance matrix with infinity
-        vector<vector<int>> dist(n, vector<int>(n, INT_MAX));
-        
-        // Distance from a city to itself is 0
-        for (int i = 0; i < n; ++i) {
-            dist[i][i] = 0;
-        }
-        
-        // Set the distances for the provided edges
-        for (auto& edge : edges) {
-            int u = edge[0], v = edge[1], w = edge[2];
-            dist[u][v] = w;
-            dist[v][u] = w;
-        }
-        
-        // Floyd-Warshall algorithm to find shortest paths
-        for (int k = 0; k < n; ++k) {
-            for (int i = 0; i < n; ++i) {
-                for (int j = 0; j < n; ++j) {
-                    if (dist[i][k] != INT_MAX && dist[k][j] != INT_MAX) {
-                        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-                    }
+        vector<vector<int>> matrix(n,vector<int>(n,1e9));
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(i==j){
+                    matrix[i][j]=0;
                 }
             }
         }
-        
-        // Find the city with the smallest number of reachable cities
-        int minReachable = INT_MAX;
-        int bestCity = -1;
-        
-        for (int i = 0; i < n; ++i) {
-            int reachable = 0;
-            for (int j = 0; j < n; ++j) {
-                if (i != j && dist[i][j] <= distanceThreshold) {
-                    ++reachable;
+        for(auto edge:edges){
+            int u = edge[0];
+            int v = edge[1];
+            int w = edge[2];
+
+            matrix[u][v]=w;
+            matrix[v][u]=w;
+        }
+        for(int k=0;k<n;k++){
+            for(int i=0;i<n;i++){
+                for(int j=0;j<n;j++){
+                    matrix[i][j] = min(matrix[i][j],matrix[i][k]+matrix[k][j]);
                 }
             }
-            
-            // If the current city has fewer reachable cities or the same number but greater index
-            if (reachable < minReachable || (reachable == minReachable && i > bestCity)) {
-                minReachable = reachable;
-                bestCity = i;
-            }
         }
-        
-        return bestCity;
+        int ans = 0;
+        int min_cities = INT_MAX;
+        for(int i=0;i<n;i++){
+            int count = 0;
+            for(int j=0;j<n;j++){
+                if(matrix[i][j]<=distanceThreshold){
+                    count++;
+                }
+            }
+            if(count<=min_cities){
+                min_cities=count;
+                ans = i;
+            }
+
+        }
+        return ans;
     }
 };
