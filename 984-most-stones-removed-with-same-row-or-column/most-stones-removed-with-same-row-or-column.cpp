@@ -74,24 +74,24 @@ class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
         int n = stones.size();
-        unordered_map<int,pair<int,int>> map;
+        int max_row = 0;
+        int max_col = 0;
+        for(auto it:stones){
+            max_row = max(max_row,it[0]);
+            max_col = max(max_col,it[1]);
+        }
+        DisjointSet ds(max_row+max_col+2);
+        unordered_set<int> unique_indices;
         for(int i=0;i<n;i++){
-            map[i] = {stones[i][0],stones[i][1]};
-        } 
-        DisjointSet ds(n);
-        for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(i==j) continue;
-                auto cord1 = map[i];
-                auto cord2 = map[j];
-                if(cord1.first==cord2.first || cord1.second==cord2.second){
-                    ds.unionByRank(i,j);
-                }
-            }
+            int row = stones[i][0];
+            int col = stones[i][1]+max_row+1;
+            ds.unionByRank(row,col);
+            unique_indices.insert(row);
+            unique_indices.insert(col);
         }
         int nc = 0;
-        for(int i=0;i<n;i++){
-            if(ds.findUltParent(i)==i){
+        for (int idx : unique_indices) {
+            if (ds.findUltParent(idx) == idx) {
                 nc++;
             }
         }
