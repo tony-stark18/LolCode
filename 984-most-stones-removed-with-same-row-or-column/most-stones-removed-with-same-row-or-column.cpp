@@ -89,15 +89,12 @@ public:
                 }
             }
         }
-        unordered_map<int,int> components;
+        int nc = 0;
         for(int i=0;i<n;i++){
-            int p_i = ds.findUltParent(i);
-            components[p_i]++;
+            if(ds.findUltParent(i)==i){
+                nc++;
+            }
         }
-        int ans = 0;
-        for(auto it:components){
-            ans+=it.second-1;
-        }
-        return ans;
+        return n-nc;
     }
 };
