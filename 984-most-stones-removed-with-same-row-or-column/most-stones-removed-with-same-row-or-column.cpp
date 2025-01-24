@@ -1,30 +1,28 @@
-class DisjointSet
-{
+#define fast_io()                                                              \
+    ios_base::sync_with_stdio(false);                                          \
+    cin.tie(nullptr);                                                          \
+    cout.tie(nullptr);
+class DisjointSet {
     vector<int> rank, parent, size;
 
 public:
-    DisjointSet(int n)
-    {
+    DisjointSet(int n) {
         rank.resize(n + 1, 0);
         parent.resize(n + 1, 0);
-        for (int i = 0; i <= n; i++)
-        {
+        for (int i = 0; i <= n; i++) {
             parent[i] = i;
         }
         size.resize(n + 1, 1);
     }
 
-    int findUltParent(int node)
-    {
-        if (node == parent[node])
-        {
+    int findUltParent(int node) {
+        if (node == parent[node]) {
             return node;
         }
         return parent[node] = findUltParent(parent[node]);
     }
 
-    void unionByRank(int u, int v)
-    {
+    void unionByRank(int u, int v) {
         int ulp_u = findUltParent(u);
         int ulp_v = findUltParent(v);
 
@@ -34,23 +32,17 @@ public:
         int rank_ulp_u = rank[ulp_u];
         int rank_ulp_v = rank[ulp_v];
 
-        if (rank_ulp_u > rank_ulp_v)
-        {
+        if (rank_ulp_u > rank_ulp_v) {
             parent[ulp_v] = ulp_u;
-        }
-        else if (rank_ulp_v > rank_ulp_u)
-        {
+        } else if (rank_ulp_v > rank_ulp_u) {
             parent[ulp_u] = ulp_v;
-        }
-        else
-        {
+        } else {
             parent[ulp_u] = ulp_v;
             rank[ulp_v]++;
         }
     }
 
-    void unionBySize(int u, int v)
-    {
+    void unionBySize(int u, int v) {
         int ulp_u = findUltParent(u);
         int ulp_v = findUltParent(v);
 
@@ -58,13 +50,10 @@ public:
             return;
         int size_ulp_u = size[ulp_u];
         int size_ulp_v = size[ulp_v];
-        if (size_ulp_u < size_ulp_v)
-        {
+        if (size_ulp_u < size_ulp_v) {
             parent[ulp_u] = ulp_v;
             size[ulp_v] += size_ulp_u;
-        }
-        else
-        {
+        } else {
             parent[ulp_v] = ulp_u;
             size[ulp_u] += size_ulp_v;
         }
@@ -73,19 +62,20 @@ public:
 class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
+        fast_io();
         int n = stones.size();
         int max_row = 0;
         int max_col = 0;
-        for(auto it:stones){
-            max_row = max(max_row,it[0]);
-            max_col = max(max_col,it[1]);
+        for (auto it : stones) {
+            max_row = max(max_row, it[0]);
+            max_col = max(max_col, it[1]);
         }
-        DisjointSet ds(max_row+max_col+2);
+        DisjointSet ds(max_row + max_col + 2);
         unordered_set<int> unique_indices;
-        for(int i=0;i<n;i++){
+        for (int i = 0; i < n; i++) {
             int row = stones[i][0];
-            int col = stones[i][1]+max_row+1;
-            ds.unionByRank(row,col);
+            int col = stones[i][1] + max_row + 1;
+            ds.unionByRank(row, col);
             unique_indices.insert(row);
             unique_indices.insert(col);
         }
@@ -95,6 +85,6 @@ public:
                 nc++;
             }
         }
-        return n-nc;
+        return n - nc;
     }
 };
