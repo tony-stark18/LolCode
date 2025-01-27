@@ -1,36 +1,29 @@
 class Solution {
 public:
-    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& pre,
-                                     vector<vector<int>>& q) {
-        vector<bool> ans(q.size(), false);
-        if (pre.size() == 0)
-            return ans;
+    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& pre, vector<vector<int>>& q) {
         vector<vector<int>> adj(n);
-        for (auto it : pre) {
-            adj[it[0]].push_back(it[1]);
+        for (auto& p : pre) {
+            adj[p[0]].push_back(p[1]);
         }
-        vector<vector<int>> canReach(n,vector<int>(n,0));
-        for(int i=0;i<n;i++){
-            queue<int> q;
-            vector<int> vis(n,0);
-            vis[i]=1;
-            q.push(i);
-            while(!q.empty()){
-                int node = q.front();
-                q.pop();
-                for(auto it:adj[node]){
-                    canReach[i][it]=1;
-                    if(!vis[it]){
-                        vis[it]=1;
-                        q.push(it);
-                    }
+        
+        // Memoization table for reachability
+        vector<vector<int>> memo(n, vector<int>(n, -1)); // -1: unvisited, 0: no, 1: yes
+
+        // DFS to check reachability
+        function<bool(int, int)> dfs = [&](int u, int v) {
+            if (memo[u][v] != -1) return memo[u][v];
+            for (int neighbor : adj[u]) {
+                if (neighbor == v || dfs(neighbor, v)) {
+                    return memo[u][v] = 1;
                 }
             }
-        }
-        for(int i=0;i<q.size();i++){
-            int u = q[i][0];
-            int v = q[i][1];
-            if(canReach[u][v]) ans[i]=true;
+            return memo[u][v] = 0;
+        };
+
+        // Answer the queries
+        vector<bool> ans;
+        for (auto& query : q) {
+            ans.push_back(dfs(query[0], query[1]));
         }
         return ans;
     }
