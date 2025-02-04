@@ -1,44 +1,45 @@
+#include <iostream>
+#include <vector>
+#include <queue>
+using namespace std;
+
 class Solution {
 public:
     vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
-        //0-red,1-blue
-        vector<vector<pair<int,int>>> adj(n);
-        for(auto it:redEdges){
-            adj[it[0]].push_back({it[1],0});
+        vector<vector<pair<int, int>>> adj(n);
+        
+        // Construct adjacency list with color information (0 = red, 1 = blue)
+        for (auto& edge : redEdges) {
+            adj[edge[0]].push_back({edge[1], 0});
         }
-        for(auto it:blueEdges){
-            adj[it[0]].push_back({it[1],1});
+        for (auto& edge : blueEdges) {
+            adj[edge[0]].push_back({edge[1], 1});
         }
-        queue<pair<int,pair<int,int>>> q;
-        vector<int> distances(n,1e9);
-        vector<vector<int>> colors(2,vector<int>(n,0));
-        // vector<int> blue(n,0);
-        // vector<int> red(n,0);
-        distances[0]=0;
-        q.push({0,{0,-1}});
-        while(!q.empty()){
-            auto it = q.front();
+
+        queue<pair<int, int>> q; // {node, color}
+        vector<vector<int>> distances(2, vector<int>(n, 1e9)); // distances[0][i] for red, distances[1][i] for blue
+
+        distances[0][0] = distances[1][0] = 0; // Distance to self is 0
+        q.push({0, 0}); // Start with red
+        q.push({0, 1}); // Start with blue
+
+        while (!q.empty()) {
+            auto [node, prevColor] = q.front();
             q.pop();
-            int dist = it.first;
-            int node = it.second.first;
-            int prevCol = it.second.second;
-            if(prevCol!=-1){
-                colors[prevCol][node]++;
-            }
-            for(auto it:adj[node]){
-                int adjNode = it.first;
-                int currCol = it.second;
-                if(prevCol!=currCol && !colors[currCol][adjNode]){
-                    q.push({dist+1,{adjNode,currCol}});
-                    colors[currCol][adjNode]++;
-                    distances[adjNode]=min(distances[adjNode],dist+1);
+
+            for (auto& [nextNode, edgeColor] : adj[node]) {
+                if (edgeColor != prevColor && distances[edgeColor][nextNode] == 1e9) {
+                    distances[edgeColor][nextNode] = distances[prevColor][node] + 1;
+                    q.push({nextNode, edgeColor});
                 }
             }
         }
-        for(int i=0;i<n;i++){
-            if(distances[i]==1e9) distances[i]=-1;
-        }
-        return distances;
-    }
 
+        vector<int> result(n);
+        for (int i = 0; i < n; i++) {
+            int shortest = min(distances[0][i], distances[1][i]);
+            result[i] = (shortest == 1e9) ? -1 : shortest;
+        }
+        return result;
+    }
 };
