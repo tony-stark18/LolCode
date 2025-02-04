@@ -7,8 +7,6 @@ class Solution {
 public:
     vector<int> shortestAlternatingPaths(int n, vector<vector<int>>& redEdges, vector<vector<int>>& blueEdges) {
         vector<vector<pair<int, int>>> adj(n);
-        
-        // Construct adjacency list with color information (0 = red, 1 = blue)
         for (auto& edge : redEdges) {
             adj[edge[0]].push_back({edge[1], 0});
         }
@@ -16,12 +14,12 @@ public:
             adj[edge[0]].push_back({edge[1], 1});
         }
 
-        queue<pair<int, int>> q; // {node, color}
-        vector<vector<int>> distances(2, vector<int>(n, 1e9)); // distances[0][i] for red, distances[1][i] for blue
+        queue<pair<int, int>> q;
+        vector<vector<int>> distances(2, vector<int>(n, 1e9));
 
-        distances[0][0] = distances[1][0] = 0; // Distance to self is 0
-        q.push({0, 0}); // Start with red
-        q.push({0, 1}); // Start with blue
+        distances[0][0] = distances[1][0] = 0;
+        q.push({0, 0}); 
+        q.push({0, 1});
 
         while (!q.empty()) {
             auto [node, prevColor] = q.front();
