@@ -4,7 +4,8 @@ public:
         unordered_map<int,int> balls;
         unordered_map<int,int> colors;
         vector<int> ans;
-        for(auto it:queries){
+        for(const auto &it:queries){
+            
             if(balls.find(it[0])!=balls.end()){
                 int ball = balls[it[0]];
                 colors[ball]--;
