@@ -6,20 +6,21 @@
  *     TreeNode *right;
  *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
  *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left),
- * right(right) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
 class Solution {
 public:
     vector<int> postorderTraversal(TreeNode* root) {
-        if (root == nullptr)
+        if(root==nullptr){
             return {};
-        vector<int> left = postorderTraversal(root->left);
-        vector<int> right = postorderTraversal(root->right);
-        for (auto it : right)
-            left.push_back(it);
-        left.push_back(root->val);
-        return left;
+        }
+        vector<int> res;
+        vector<int> leftRes = postorderTraversal(root->left);
+        vector<int> rightRes = postorderTraversal(root->right);
+        res.insert(res.end(),leftRes.begin(),leftRes.end());
+        res.insert(res.end(),rightRes.begin(),rightRes.end());
+        res.push_back(root->val);
+        return res;
     }
 };
