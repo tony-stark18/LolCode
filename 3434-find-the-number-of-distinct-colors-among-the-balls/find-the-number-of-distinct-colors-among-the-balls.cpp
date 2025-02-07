@@ -1,25 +1,26 @@
 class Solution {
 public:
     vector<int> queryResults(int limit, vector<vector<int>>& queries) {
-        unordered_map<int,int> balls;
-        unordered_map<int,int> colors;
+        unordered_map<int, int> balls;  // Maps index to color
+        unordered_map<int, int> colors; // Maps color to count
         vector<int> ans;
-        for(const auto &it:queries){
+        
+        for (const auto &q : queries) {
+            int index = q[0], color = q[1];
             
-            if(balls.find(it[0])!=balls.end()){
-                int ball = balls[it[0]];
-                colors[ball]--;
-                if(colors[ball]==0){
-                    colors.erase(ball);
+            if (balls.count(index)) { // If the index already has a ball
+                int prevColor = balls[index];
+                if (--colors[prevColor] == 0) { // Decrement color count and remove if zero
+                    colors.erase(prevColor);
                 }
-                balls[it[0]]=it[1];
-            } else{
-                balls[it[0]]=it[1];
             }
-            colors[it[1]]++;
-            cout<<colors.size()<<" ";
-            ans.push_back(min(colors.size(),balls.size()));
+            
+            balls[index] = color; // Assign new color
+            colors[color]++; // Increment new color count
+            
+            ans.push_back(min((int)colors.size(), (int)balls.size()));
         }
+        
         return ans;
     }
 };
