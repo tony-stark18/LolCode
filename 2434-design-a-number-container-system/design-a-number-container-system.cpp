@@ -1,3 +1,6 @@
+int IO = []{
+    ios::sync_with_stdio(false); cin.tie(nullptr); return 0;
+}();
 class NumberContainers {
 public:
     unordered_map<int,int> ind_map;
