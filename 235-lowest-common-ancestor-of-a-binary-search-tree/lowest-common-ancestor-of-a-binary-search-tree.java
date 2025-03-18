@@ -9,18 +9,15 @@
  */
 
 class Solution {
-    public TreeNode soln(TreeNode root, TreeNode p, TreeNode q) {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         if (root == null)
             return null;
         if (p.val < root.val && q.val < root.val) {
-            return soln(root.left, p, q);
+            return lowestCommonAncestor(root.left, p, q);
         } else if (p.val > root.val && q.val > root.val) {
-            return soln(root.right, p, q);
+            return lowestCommonAncestor(root.right, p, q);
         } else {
             return root;
         }
-    }
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        return soln(root,p,q);
     }
 }
