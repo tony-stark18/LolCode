@@ -2,19 +2,22 @@ class Solution {
 public:
     int minOperations(vector<vector<int>>& grid, int x) {
         vector<int> arr;
-        int m = grid.size();
-        int n = grid[0].size();
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                arr.push_back(grid[i][j]);
+        int m = grid.size(), n = grid[0].size();
+        
+        for (auto& row : grid) {
+            for (int num : row) {
+                arr.push_back(num);
             }
         }
-        sort(arr.begin(),arr.end());
-        int pivot = arr[m*n/2];
+
+        int size = m * n;
+        nth_element(arr.begin(), arr.begin() + size / 2, arr.end());
+        int pivot = arr[size / 2];
+
         int ans = 0;
-        for(int i:arr){
-            if(abs(i-pivot)%x) return -1;
-            ans+=abs(i-pivot)/x;
+        for (int num : arr) {
+            if ((num - pivot) % x != 0) return -1;
+            ans += abs(num - pivot) / x;
         }
         return ans;
     }
