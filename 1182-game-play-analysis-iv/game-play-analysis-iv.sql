@@ -13,4 +13,4 @@ FROM (
         FROM Activity a2
         WHERE a2.player_id = Activity.player_id
     )
-) t;
+);
