@@ -10,18 +10,22 @@
  * right(right) {}
  * };
  */
-struct ReturnType{
+struct ReturnType {
     bool res;
     long max_val;
     long min_val;
 };
 ReturnType soln(TreeNode* root) {
     if (!root)
-        return {true,LONG_MIN,LONG_MAX};
+        return {true, LONG_MIN, LONG_MAX};
     ReturnType l = soln(root->left);
     ReturnType r = soln(root->right);
-    bool ans = l.res && r.res && root->val>l.max_val && root->val<r.min_val;
-    return {ans,max(max(l.max_val,r.max_val),(long)root->val),min(min(l.min_val,r.min_val),(long)root->val)};
+    bool ans = l.res && r.res && root->val > l.max_val && root->val < r.min_val;
+    return {
+        ans,
+        max((long)root->val, r.max_val),
+        min((long)root->val, l.min_val)
+    };
 }
 class Solution {
 public:
