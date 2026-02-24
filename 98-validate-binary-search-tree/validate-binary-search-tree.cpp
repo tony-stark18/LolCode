@@ -16,16 +16,14 @@ struct ReturnType {
     long min_val;
 };
 ReturnType soln(TreeNode* root) {
-    if (!root)
+    if (!root) {
         return {true, LONG_MIN, LONG_MAX};
+    }
     ReturnType l = soln(root->left);
     ReturnType r = soln(root->right);
     bool ans = l.res && r.res && root->val > l.max_val && root->val < r.min_val;
-    return {
-        ans,
-        max((long)root->val, r.max_val),
-        min((long)root->val, l.min_val)
-    };
+    return {ans, max((long)root->val, r.max_val),
+            min((long)root->val, l.min_val)};
 }
 class Solution {
 public:
