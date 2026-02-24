@@ -21,7 +21,7 @@ public:
             parent = curr;
             if (key > curr->val)
                 curr = curr->right;
-            else
+            else if(key < curr->val)
                 curr = curr->left;
         }
         if (!curr)
